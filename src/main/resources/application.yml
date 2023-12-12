@@ -1,7 +1,7 @@
 spring:
   #数据库连接信息
   datasource:
-    url: jdbc:mysql://localhost:3306/tlias
+    url: jdbc:mysql://localhost:3306/learning_sys
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: mx123456

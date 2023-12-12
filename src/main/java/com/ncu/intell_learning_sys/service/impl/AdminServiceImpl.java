@@ -1,5 +1,7 @@
 package com.ncu.intell_learning_sys.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ncu.intell_learning_sys.entity.Admin;
 import com.ncu.intell_learning_sys.mapper.AdminMapper;
 import com.ncu.intell_learning_sys.service.IAdminService;
@@ -16,5 +18,5 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements IAdminService {
-
+    private AdminMapper adminMapper;
 }

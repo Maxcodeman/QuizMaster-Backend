@@ -2,6 +2,7 @@ package com.ncu.intell_learning_sys.service;
 
 import com.ncu.intell_learning_sys.entity.Admin;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.ncu.intell_learning_sys.mapper.AdminMapper;
 
 /**
  * <p>
@@ -12,5 +13,4 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2023-12-04
  */
 public interface IAdminService extends IService<Admin> {
-
 }
