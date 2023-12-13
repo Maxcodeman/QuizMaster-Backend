@@ -10,7 +10,8 @@ import java.util.Map;
 public class JwtUtils {
 
     private static String signKey = "max666";
-    private static Long expire = 14*86400000L;
+    private static Long longExpire = 14*86400000L;
+    private static Long shortExpire= 900000L;
 
     /**
      * 生成JWT令牌
@@ -21,7 +22,7 @@ public class JwtUtils {
         String jwt = Jwts.builder()
                 .addClaims(claims)
                 .signWith(SignatureAlgorithm.HS256, signKey)
-                .setExpiration(new Date(System.currentTimeMillis() + expire))
+                .setExpiration(new Date(System.currentTimeMillis() + longExpire))
                 .compact();
         return jwt;
     }
@@ -30,7 +31,7 @@ public class JwtUtils {
         String jwt = Jwts.builder()
                 .addClaims(claims)
                 .signWith(SignatureAlgorithm.HS256, signKey)
-                .setExpiration(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis()+shortExpire))
                 .compact();
         return jwt;
     }

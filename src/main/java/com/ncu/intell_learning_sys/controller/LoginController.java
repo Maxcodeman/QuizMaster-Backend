@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -22,7 +23,7 @@ public class LoginController {
     private IAdminService iAdminService;
 
     @PostMapping("/login")
-    public Result login(@RequestBody Admin admin){
+    public Result login(@RequestBody Admin admin,@RequestParam(required = false) Boolean remember){
         String password=admin.getPassword();
 
         //向数据库中查询是否有对应的管理员
@@ -49,7 +50,14 @@ public class LoginController {
         Map<String,Object> claims=new HashMap<>();
         claims.put("id",a.getAdminId());
 
-        String jwt= JwtUtils.generateJwtWithExpire(claims);
+        String jwt=null;
+        //是否保持登录
+        if(remember){
+            jwt= JwtUtils.generateJwtWithExpire(claims);
+        }
+        else {
+            jwt = JwtUtils.generateJwtWithoutExpire(claims);
+        }
         return Result.success(jwt);
     }
 }

@@ -45,7 +45,6 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
             e.printStackTrace();
             log.info("解析token失败,返回未登录的信息");
             Result error = Result.error("登录状态超过有效期");
-
             String notLogin= JSONObject.toJSONString(error);
             response.getWriter().write(notLogin);
             return false;
