@@ -1,6 +1,5 @@
 package com.ncu.intell_learning_sys.controller;
 
-import cn.hutool.jwt.JWTUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ncu.intell_learning_sys.entity.Admin;
 import com.ncu.intell_learning_sys.entity.Result;

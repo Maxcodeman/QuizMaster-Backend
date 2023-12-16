@@ -3,6 +3,8 @@ package com.ncu.intell_learning_sys.service;
 import com.ncu.intell_learning_sys.entity.Type;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ITypeService extends IService<Type> {
 
+    List<Type> getAllTypes();
 }
