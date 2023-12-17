@@ -16,4 +16,6 @@ import java.util.List;
 public interface ITypeService extends IService<Type> {
 
     List<Type> getAllTypes();
+
+    int addType(String typeName);
 }

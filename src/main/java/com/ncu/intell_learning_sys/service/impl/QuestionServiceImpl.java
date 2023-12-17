@@ -57,4 +57,34 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
         res.put("total",page.getTotal());
         return res;
     }
+
+    @Override
+    public Integer deleteByIds(List<Long> ids) {
+        return questionMapper.deleteBatchIds(ids);
+    }
+
+    @Override
+    public Integer editById(Long id, Integer type, Integer category,String content,String answer) {
+        Question q=questionMapper.selectById(id);
+        if(type!=null&&type!=q.getQuestionType()){
+            q.setQuestionType(type);
+        }
+        if(category!=null&&category!=q.getQuestionCategory()){
+            q.setQuestionCategory(category);
+        }
+        if(content!=null&&!content.equals(q.getQuestionContent())){
+            q.setQuestionContent(content);
+        }
+        if(answer!=null&&!answer.equals(q.getQuestionAnswer())){
+            q.setQuestionAnswer(answer);
+        }
+        return questionMapper.updateById(q);
+    }
+
+    @Override
+    public Integer addOne(Integer type, Integer category, String content, String answer) {
+        Question q= new Question();
+        q.setQuestionType(type).setQuestionCategory(category).setQuestionContent(content).setQuestionAnswer(answer);
+        return questionMapper.insert(q);
+    }
 }

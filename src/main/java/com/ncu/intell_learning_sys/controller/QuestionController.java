@@ -67,4 +67,37 @@ public class QuestionController {
             return Result.success(res);
         }
     }
+
+    @DeleteMapping("/{ids}")
+    public Result deleteByIds(@PathVariable List<Long> ids){
+        int columns=iQuestionService.deleteByIds(ids);
+        log.info("删除的行数:"+columns);
+        return Result.success();
+    }
+
+    @PutMapping
+    public Result editById(@RequestParam Long id,@RequestParam(required = false) Integer type,@RequestParam(required = false)
+    Integer category,@RequestParam(required = false) String content,@RequestParam(required = false) String answer){
+
+        int column = iQuestionService.editById(id,type,category,content,answer);
+        log.info("修改的行数:"+column);
+        if(column==1){
+            return Result.success();
+        }else{
+            return Result.error("修改失败");
+        }
+    }
+
+    @PostMapping
+    public Result addOne(@RequestParam Integer type,@RequestParam
+    Integer category,@RequestParam String content,@RequestParam String answer){
+
+        int column = iQuestionService.addOne(type,category,content,answer);
+        if(column==1){
+            return Result.success();
+        }else{
+            return Result.error("修改失败");
+        }
+    }
+
 }

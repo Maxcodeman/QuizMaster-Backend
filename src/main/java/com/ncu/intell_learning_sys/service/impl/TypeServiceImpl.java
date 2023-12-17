@@ -27,4 +27,12 @@ public class TypeServiceImpl extends ServiceImpl<TypeMapper, Type> implements IT
     public List<Type> getAllTypes() {
         return typeMapper.selectList(null);
     }
+
+    @Override
+    public int addType(String typeName) {
+        Type type=new Type();
+        type.setTypeName(typeName);
+
+        return typeMapper.insert(type);
+    }
 }

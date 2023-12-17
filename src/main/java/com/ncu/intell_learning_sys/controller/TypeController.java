@@ -6,10 +6,7 @@ import com.ncu.intell_learning_sys.entity.Type;
 import com.ncu.intell_learning_sys.service.ITypeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,4 +31,17 @@ public class TypeController {
         log.info("获取所有题型:{}",typeList);
         return Result.success(typeList);
     }
+
+    @PostMapping
+    public Result addType(@RequestParam String typeName){
+        int column=iTypeService.addType(typeName);
+        if(column==1){
+            log.info("添加题型成功");
+            return Result.success();
+        }else{
+            log.info("添加题型失败");
+            return Result.error("添加题型失败");
+        }
+    }
+
 }

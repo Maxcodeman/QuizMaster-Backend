@@ -26,4 +26,12 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     public List<Category> getAllCategories() {
         return categoryMapper.selectList(null);
     }
+
+    @Override
+    public Integer addCategory(String categoryName) {
+        Category category=new Category();
+        category.setCategoryName(categoryName);
+
+        return categoryMapper.insert(category);
+    }
 }
