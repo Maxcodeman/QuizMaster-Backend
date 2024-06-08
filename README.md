@@ -1,2 +1,2 @@
-# intelligent_learning_sys
-SpringBoot+Vue做的一个微信小程序智能学习系统
+# QuizMaster
+刷题宝后台系统
