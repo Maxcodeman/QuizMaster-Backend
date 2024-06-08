@@ -1,4 +1,4 @@
-package com.ncu.quiz_master_backend.controller;
+package com.ncu.quiz_master_backend.controller.admin;
 
 
 import org.springframework.web.bind.annotation.RequestMapping;
