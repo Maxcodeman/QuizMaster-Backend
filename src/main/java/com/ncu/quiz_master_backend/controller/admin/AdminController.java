@@ -60,6 +60,13 @@ public class AdminController {
         }
     }
 
+    /**
+     * 条件分页查询
+     * @param name
+     * @param page
+     * @param pageSize
+     * @return
+     */
     @GetMapping("/admins")
     public Result query(@RequestParam(required = false) String name,@RequestParam(defaultValue = "1") Integer page,
                         @RequestParam(defaultValue = "10") Integer pageSize){
@@ -67,6 +74,22 @@ public class AdminController {
         return Result.success(pageBean);
     }
 
+    /**
+     * 根据id查询
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    public Result queryById(@PathVariable Integer id){
+        Admin admin = adminService.queryById(id);
+        return Result.success(admin);
+    }
+
+    /**
+     * 删除
+     * @param id
+     * @return
+     */
     @DeleteMapping("/admins/{id}")
     public Result deleteById(@PathVariable Integer id){
         adminService.deleteById(id);
@@ -74,6 +97,11 @@ public class AdminController {
         return Result.success();
     }
 
+    /**
+     * 更新
+     * @param admin
+     * @return
+     */
     @PutMapping("/admins")
     public Result update(@RequestBody Admin admin){
         log.info("更新管理员: {}",admin);
@@ -81,6 +109,11 @@ public class AdminController {
         return Result.success();
     }
 
+    /**
+     * 修改
+     * @param admin
+     * @return
+     */
     @PostMapping("/admins")
     public Result insert(@RequestBody Admin admin){
         adminService.insert(admin);
