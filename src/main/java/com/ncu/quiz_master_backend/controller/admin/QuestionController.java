@@ -46,8 +46,8 @@ public class QuestionController {
 
     @PostMapping
     public Result addOne(@RequestBody Question question){
-        List<Question> questionList = iQuestionService.addOne(question);
-        return Result.success(questionList);
+        iQuestionService.addOne(question);
+        return Result.success();
     }
 
     @GetMapping("/{id}")

@@ -1,5 +1,6 @@
 package com.ncu.quiz_master_backend.service.impl;
 
+import com.ncu.quiz_master_backend.entity.Category;
 import com.ncu.quiz_master_backend.entity.PageBean;
 import com.ncu.quiz_master_backend.entity.Question;
 import com.ncu.quiz_master_backend.mapper.CategoryMapper;
@@ -48,8 +49,11 @@ public class QuestionServiceImpl implements IQuestionService {
     }
 
     @Override
-    public List<Question> addOne(Question question) {
-        return questionMapper.insert(question);
+    public void addOne(Question question) {
+        questionMapper.insert(question);
+        int id=question.getCategoryId();
+        int cnt = questionMapper.selectCountByCategoryId(id);
+        categoryMapper.updateForQuestionCount(cnt,id);
     }
 
     @Override

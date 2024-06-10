@@ -33,8 +33,8 @@ public class CategoryServiceImpl implements ICategoryService {
     @Override
     public PageBean listAll(Integer page, Integer pageSize, String categoryName) {
         PageHelper.startPage(page,pageSize);
-        List<Category> questionList = categoryMapper.selectAll(categoryName);
-        Page<Category> p = (Page<Category>) questionList;
+        List<Category> categoryList = categoryMapper.selectAll(categoryName);
+        Page<Category> p = (Page<Category>) categoryList;
         return new PageBean(p.getTotal(),p.getResult());
     }
     @Transactional(rollbackFor = Exception.class)
@@ -47,5 +47,23 @@ public class CategoryServiceImpl implements ICategoryService {
         int cnt=questionMapper.selectCountByCategoryId(id);
         //更新该分类的题目数量字段
         categoryMapper.updateForQuestionCount(cnt,id);
+    }
+
+    @Override
+    public void addOne(String categoryName) {
+        Category category=new Category();
+        category.setCategoryName(categoryName);
+        category.setQuestionCount(0);
+        categoryMapper.insert(category);
+    }
+
+    @Override
+    public Category getById(Integer id) {
+        return categoryMapper.selectById(id);
+    }
+
+    @Override
+    public void modify(Category category) {
+        categoryMapper.update(category);
     }
 }

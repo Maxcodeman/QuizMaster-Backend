@@ -23,7 +23,7 @@ public interface IQuestionService{
 
     void removeById(List<Integer> ids);
 
-    List<Question> addOne(Question question);
+    void addOne(Question question);
 
     Question getById(Integer id);
 

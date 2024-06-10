@@ -23,7 +23,7 @@ public class Question{
 
     private String optionD;
 
-    private String[] answer;
+    private String answer;
 
     private Integer categoryId;
 

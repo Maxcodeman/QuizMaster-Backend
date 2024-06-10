@@ -2,9 +2,8 @@ package com.ncu.quiz_master_backend.mapper;
 
 import com.ncu.quiz_master_backend.entity.Category;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Update;
+import com.ncu.quiz_master_backend.entity.Question;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -20,9 +19,18 @@ import java.util.List;
 public interface CategoryMapper{
 
     List<Category> selectAll(String categoryName);
-    @Delete("delete from tb_category where id=#{id}")
+    @Delete("delete from tb_category where category_id=#{id}")
     void deleteById(Integer id);
 
-    @Update("update tb_category set questionCount=#{cnt} where id = #{id}")
+    @Update("update tb_category set question_count=#{cnt} where category_id = #{id}")
     void updateForQuestionCount(Integer cnt,Integer id);
+
+    @Insert("insert into tb_category (category_name, question_count) " +
+            "values (#{categoryName},#{questionCount})")
+    void insert(Category category);
+
+    @Select("select * from tb_category where category_id=#{id}")
+    Category selectById(Integer id);
+    @Update("update tb_category set category_name=#{categoryName} where category_id =#{categoryId}")
+    void update(Category category);
 }
