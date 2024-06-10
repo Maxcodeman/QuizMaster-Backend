@@ -1,10 +1,11 @@
 spring:
   #数据库连接信息
   datasource:
-    url: jdbc:mysql://localhost:3306/learning_sys
+    url: jdbc:mysql://localhost:3306/quiz_master
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: mx123456
-
-
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
 
