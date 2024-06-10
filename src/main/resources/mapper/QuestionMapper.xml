@@ -18,7 +18,7 @@
     </select>
 
     <delete id="deleteById">
-        delete from tb_question where id in
+        delete from tb_question where question_id in
         <foreach collection="ids" item="id" separator="," open="(" close=")">
             #{id}
         </foreach>
@@ -52,6 +52,6 @@
                 type=#{type},
             </if>
         </set>
-        where question_d=#{questionId}
+        where question_id=#{questionId}
     </update>
 </mapper>
