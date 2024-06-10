@@ -1,11 +1,9 @@
 package com.ncu.quiz_master_backend.mapper;
 
 import com.ncu.quiz_master_backend.entity.Admin;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
+
+import java.util.List;
 
 /**
  * 管理员Mapper层
@@ -15,9 +13,13 @@ public interface AdminMapper {
     @Select("select * from tb_admin where admin_id=#{id}")
     Admin queryById(Integer id);
 
-    @Update("update tb_admin set admin_name=#{adminName},mobile=#{mobile},password=#{password} where admin_id=#{adminId}")
     void update(Admin admin);
 
     @Delete("delete from tb_admin where admin_id=#{id}")
     void deleteById(Integer id);
+
+    List<Admin> list(String name,Integer page,Integer pageSize);
+
+    @Insert("insert into tb_admin(admin_name, password, mobile) values(#{adminName},#{password},#{mobile})")
+    void insert(Admin admin);
 }

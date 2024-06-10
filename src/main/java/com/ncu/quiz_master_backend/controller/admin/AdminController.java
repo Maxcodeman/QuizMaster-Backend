@@ -1,6 +1,7 @@
 package com.ncu.quiz_master_backend.controller.admin;
 
 import com.ncu.quiz_master_backend.entity.Admin;
+import com.ncu.quiz_master_backend.entity.PageBean;
 import com.ncu.quiz_master_backend.entity.Result;
 import com.ncu.quiz_master_backend.service.AdminService;
 import com.ncu.quiz_master_backend.utils.JwtUtils;
@@ -34,7 +35,7 @@ public class AdminController {
         //获取传递的管理员id
         int id=admin.getAdminId();
         //查询是否有对应的管理员
-        Admin a = adminService.query(id);
+        Admin a = adminService.queryById(id);
         //数据库中没有该管理员信息
         if(a==null){
             return Result.error("登录失败，不存在该账户");
@@ -60,19 +61,31 @@ public class AdminController {
     }
 
     @GetMapping("/admins")
-    public Result query(@RequestParam(required = false) Integer id,@RequestParam(required = false) String name){
-        adminService.query
+    public Result query(@RequestParam(required = false) String name,@RequestParam(defaultValue = "1") Integer page,
+                        @RequestParam(defaultValue = "10") Integer pageSize){
+        PageBean pageBean = adminService.list(name, page, pageSize);
+        return Result.success(pageBean);
     }
 
     @DeleteMapping("/admins/{id}")
     public Result deleteById(@PathVariable Integer id){
         adminService.deleteById(id);
+        log.info("删除管理员: {}",id);
         return Result.success();
     }
 
     @PutMapping("/admins")
     public Result update(@RequestBody Admin admin){
+        log.info("更新管理员: {}",admin);
         adminService.update(admin);
+        return Result.success();
+    }
+
+    @PostMapping("/admins")
+    public Result insert(@RequestBody Admin admin){
+        adminService.insert(admin);
+        log.info("新增管理员: {}",admin);
+        return Result.success();
     }
 
 }
