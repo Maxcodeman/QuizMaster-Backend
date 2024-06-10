@@ -1,70 +1,32 @@
 package com.ncu.quiz_master_backend.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 
 /**
- * <p>
- * 
- * </p>
- *
- * @author max
- * @since 2023-12-04
+ * 题目实体类
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
-@TableName("question")
-@ApiModel(value="Question对象", description="")
 public class Question{
+    private Integer questionId;
 
-    @ApiModelProperty(value = "题目编号")
-    @TableId(value = "question_id", type = IdType.AUTO)
-    private Long questionId;
+    private String questionDesc;
 
-    @ApiModelProperty(value = "题型")
-    @TableField("question_type")
-    private Integer questionType;
+    private String optionA;
 
-    @ApiModelProperty(value = "题目分类")
-    @TableField("question_category")
-    private Integer questionCategory;
+    private String optionB;
 
-    @ApiModelProperty(value = "题目内容")
-    @TableField("question_content")
-    private String questionContent;
+    private String optionC;
 
-    @ApiModelProperty(value = "创建时间")
-    @TableField("create_time")
-    private LocalDateTime createTime;
+    private String optionD;
 
-    @ApiModelProperty(value = "更新时间")
-    @TableField("update_time")
-    private LocalDateTime updateTime;
+    private String[] answer;
 
-    @ApiModelProperty(value = "收藏次数(总)")
-    @TableField("star_count")
-    private Long starCount;
+    private Integer categoryId;
 
-    @ApiModelProperty(value = "错误次数(总)")
-    @TableField("wrong_count")
-    private Long wrongCount;
-
-    @ApiModelProperty(value = "题目答案")
-    @TableField("question_answer")
-    private String questionAnswer;
-
-
+    //题型（单选、多选或判断）
+    private Integer type;
 }

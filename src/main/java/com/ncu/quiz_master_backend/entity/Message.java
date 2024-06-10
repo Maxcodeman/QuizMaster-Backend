@@ -4,15 +4,19 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * 管理员实体类
- */
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Admin{
+public class Message {
+    private Integer messageId;
+
     private Integer adminId;
-    private String adminName;
-    private String password;
-    private String mobile;
+
+    private String messageContent;
+
+    private LocalDateTime createTime;
+    //浏览量
+    private Integer view;
 }

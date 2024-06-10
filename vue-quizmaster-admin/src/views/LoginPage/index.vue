@@ -2,7 +2,7 @@
   <div class="loginBody">
     <div class="loginDiv">
       <div class="login-content">
-        <h1 class="login-title">面试达人后台管理系统</h1>
+        <h1 class="login-title">刷题宝后台管理系统</h1>
         <el-form
           :model="loginForm"
           label-width="100px"

@@ -1,24 +1,22 @@
 package com.ncu.quiz_master_backend.entity;
 
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 评论实体类
+ * 收藏题目实体类
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Comment{
-    private Integer commentId;
-
-    private Integer userId;
+public class FavoriteQuestion {
+    private Integer favoriteId;
 
     private Integer questionId;
 
-    private String commentContent;
+    private Integer userId;
 
-    private LocalDateTime createTime;
+    //是否收藏，0未收藏，1已收藏,默认为已收藏
+    private Boolean isFavorite=true;
 }

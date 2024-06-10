@@ -1,6 +1,6 @@
 package com.ncu.quiz_master_backend.service;
 
-import com.ncu.quiz_master_backend.entity.StarQuestion;
+import com.ncu.quiz_master_backend.entity.FavoriteQuestion;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author max
  * @since 2023-12-04
  */
-public interface IStarQuestionService extends IService<StarQuestion> {
+public interface IStarQuestionService extends IService<FavoriteQuestion> {
 
 }

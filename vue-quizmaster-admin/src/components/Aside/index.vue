@@ -3,7 +3,7 @@
     <div>
         <div class="sidebar-title">
             <img src="../../assets/logo.png" width="30px" height="30px">
-            <span>面试达人后台管理</span>
+            <span>刷题宝后台管理系统</span>
         </div>
       <el-menu
         default-active="1"
@@ -34,7 +34,7 @@
 
         <el-menu-item index="4" route="/logPage">
           <template slot="title"
-            ><i class="el-icon-document"></i>日志查看</template
+            ><i class="el-icon-document"></i>日志管理</template
           >
         </el-menu-item>
 
