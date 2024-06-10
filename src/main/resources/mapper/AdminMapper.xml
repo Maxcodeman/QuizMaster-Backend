@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ncu.quiz_master_backend.mapper.AdminMapper">
+    <select id="list" resultType="com.ncu.quiz_master_backend.entity.Admin">
+        select admin_id,admin_name,password,mobile from tb_admin
+        <where>
+            <if test="name!=null">
+                admin_name like concat('%',#{name},'%')
+            </if>
+        </where>
+        limit #{page},#{pageSize}
+    </select>
+
+    <update id="update">
+        update tb_admin
+        <set>
+            <if test="adminName!=null"> admin_name=#{adminName},</if>
+            <if test="mobile!=null">mobile=#{mobile},</if>
+            <if test="password!=null">password=#{mobile}</if>
+        </set>
+        where admin_id=#{adminId}
+    </update>
+</mapper>
