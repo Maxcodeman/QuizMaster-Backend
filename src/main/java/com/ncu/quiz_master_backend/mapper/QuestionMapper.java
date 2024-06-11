@@ -1,13 +1,8 @@
 package com.ncu.quiz_master_backend.mapper;
 
-import com.ncu.quiz_master_backend.entity.Category;
 import com.ncu.quiz_master_backend.entity.Question;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.*;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.LocalDate;
 import java.util.List;
 
 /**

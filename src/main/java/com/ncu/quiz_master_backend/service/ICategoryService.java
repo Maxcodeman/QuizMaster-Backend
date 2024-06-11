@@ -1,7 +1,6 @@
 package com.ncu.quiz_master_backend.service;
 
 import com.ncu.quiz_master_backend.entity.Category;
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.ncu.quiz_master_backend.entity.PageBean;
 import com.ncu.quiz_master_backend.entity.Question;
 

@@ -2,11 +2,9 @@ package com.ncu.quiz_master_backend.service;
 
 import com.ncu.quiz_master_backend.entity.PageBean;
 import com.ncu.quiz_master_backend.entity.Question;
-import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>

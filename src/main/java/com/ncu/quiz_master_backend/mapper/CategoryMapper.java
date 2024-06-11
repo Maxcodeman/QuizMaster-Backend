@@ -1,8 +1,6 @@
 package com.ncu.quiz_master_backend.mapper;
 
 import com.ncu.quiz_master_backend.entity.Category;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ncu.quiz_master_backend.entity.Question;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;

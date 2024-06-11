@@ -1,8 +1,6 @@
 package com.ncu.quiz_master_backend.controller.admin;
 
 
-import com.baomidou.mybatisplus.core.metadata.OrderItem;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ncu.quiz_master_backend.entity.PageBean;
 import com.ncu.quiz_master_backend.entity.Question;
 import com.ncu.quiz_master_backend.entity.Result;
@@ -12,9 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>

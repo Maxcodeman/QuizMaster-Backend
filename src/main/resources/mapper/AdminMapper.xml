@@ -16,7 +16,7 @@
         <set>
             <if test="adminName!=null"> admin_name=#{adminName},</if>
             <if test="mobile!=null">mobile=#{mobile},</if>
-            <if test="password!=null">password=#{mobile}</if>
+            <if test="password!=null">password=#{password}</if>
         </set>
         where admin_id=#{adminId}
     </update>

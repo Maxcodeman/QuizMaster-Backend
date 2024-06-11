@@ -76,7 +76,7 @@ const routes = [
       },{
         path:"adminPage",
         component:() => import("@/views/AdminPage"),
-        name:"admin-page",
+        name:"admin",
         meta:{
           title:"管理员管理"
         }

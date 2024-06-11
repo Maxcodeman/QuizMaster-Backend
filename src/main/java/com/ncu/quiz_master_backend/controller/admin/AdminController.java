@@ -60,6 +60,22 @@ public class AdminController {
         }
     }
 
+    @PutMapping("/password")
+    public Result changePassword(@RequestParam Integer id,@RequestParam String oldPassword,@RequestParam String newPassword){
+        //根据id查找用户
+        Admin a = adminService.queryById(id);
+        //比对密码是否相同
+        if(!a.getPassword().equals(oldPassword)){
+            return Result.error("密码不正确");
+        }else if(oldPassword.equals(newPassword)){
+            return Result.error("新旧密码相同");
+        }else{
+            a.setPassword(newPassword);
+            adminService.update(a);
+            return Result.success();
+        }
+    }
+
     /**
      * 条件分页查询
      * @param name
@@ -79,7 +95,7 @@ public class AdminController {
      * @param id
      * @return
      */
-    @GetMapping("/{id}")
+    @GetMapping("/admins/{id}")
     public Result queryById(@PathVariable Integer id){
         Admin admin = adminService.queryById(id);
         return Result.success(admin);

@@ -11,7 +11,7 @@
           background-color="#304156"
           text-color="#fff"
           active-text-color="#ffd04b"
-          router="true"
+          router
       >
         <el-menu-item index="1" route="/homePage">
           <i class="el-icon-s-home"></i>首页
