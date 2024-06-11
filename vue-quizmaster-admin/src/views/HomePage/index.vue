@@ -5,8 +5,6 @@
         <h2 class="medium" v-if="item==1">欢迎</h2>
         <h2 class="medium" v-if="item==2">来到</h2>
         <h2 class="medium" v-if="item==3">首页</h2>
-        <h2 class="medium" v-if="item==4">孙老师yyds</h2>
-        <h2 class="medium" v-if="item==5">求求老师给孩子个高分吧</h2>
       </el-carousel-item>
     </el-carousel>
   </div>

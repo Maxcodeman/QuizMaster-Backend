@@ -2,19 +2,19 @@
   <div class="question-page">
     <div class="upload-button">
       <el-button type="primary"
-        >上传<i class="el-icon-upload el-icon--right"></i
+        >导入<i class="el-icon-upload el-icon--right"></i
       ></el-button>
     </div>
 
     <div class="search-bar">
       <el-input
-        placeholder="按关键字搜索"
+        placeholder="按题目描述搜索"
         v-model="keyword"
         style="width: 600px"
         clearable
       >
       </el-input>
-      <el-button type="primary" icon="el-icon-search" @click="selectByKeyword()">搜搜看</el-button>
+      <el-button type="primary" icon="el-icon-search" @click="pageQuestionSearch()">搜索</el-button>
     </div>
 
     <!-- 条件筛选器 -->
@@ -25,7 +25,6 @@
           :key="item.typeId"
           :label="item.typeName"
           :value="item.typeId"
-          
         >
         </el-option>
       </el-select>
@@ -34,7 +33,7 @@
     <div class="category-selector">
       <el-select
         v-model="selectedCategory"
-        placeholder="按题目分类筛选"
+        placeholder="按分类筛选"
         clearable
         @change="handleCategoryChange"
       >
@@ -56,10 +55,9 @@
 
     <el-table
       ref="multipleTable"
-      :data="tableData"
+      :data="questionData"
       tooltip-effect="dark"
       style="width: 100%"
-      :default-sort="{ prop: 'questionId', order: 'ascending' }"
       @selection-change="handleSelectionChange"
     >
       <el-table-column type="expand">
@@ -79,29 +77,15 @@
       </el-table-column>
 
       <el-table-column type="selection" width="55"> </el-table-column>
-      <el-table-column prop="questionId" label="题目编号" sortable width="120">
-        <template slot-scope="scope">{{ scope.row.questionId }}</template>
+      <el-table-column prop="questionId" label="题目编号">
       </el-table-column>
-      <el-table-column prop="questionCategory" label="题目分类" width="120" :formatter="formatCategoryType">
+      <el-table-column prop="typeId" label="题型" :formatter="formatQuestionType">
       </el-table-column>
-      <el-table-column prop="questionType" label="题型" width="120" :formatter="formatQuestionType">
+      <el-table-column prop="categoryId" label="分类" :formatter="formatCategoryType">
       </el-table-column>
-      <el-table-column prop="questionContent" label="题目内容">
+      <el-table-column prop="questionDesc" label="题目描述" >
       </el-table-column>
-      <el-table-column
-        prop="starCount"
-        label="收藏次数"
-        sortable
-        show-overflow-tooltip
-      >
-      </el-table-column>
-      <el-table-column
-        prop="wrongCount"
-        label="错误次数"
-        sortable=""
-        show-overflow-tooltip
-      >
-      </el-table-column>
+
       <el-table-column label="操作" width="120">
           <template slot-scope="scope">
             <el-button size="small" @click="selectById(scope.row)"
@@ -223,8 +207,9 @@ export default {
   data() {
     return {
       /*表格数据*/ 
-      tableData: [],
-
+      questionData: [],
+      //关键词
+      keyword:"",
       /* 编辑表单 */
       editForm:{
         id:"",
@@ -242,7 +227,9 @@ export default {
       },
       multipleSelection: [],
       /* 题型和题目分类选项 */
-      typeOptions: [],
+      typeOptions: [
+
+      ],
       categoryOptions: [],
       /* 当前选中的题型和题目分类 */
       selectedType: "",
@@ -257,8 +244,6 @@ export default {
       pageNo:1,
       pageSize:5,
       total:20,
-      /* 关键字 */
-      keyword:'',
     };
   },
 
@@ -275,28 +260,12 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
-
-    getQuestionType() {
+    getCategory() {
       axios
-        .get("/type")
+        .get("/admin/categories")
         .then((res) => {
           if (res.data.code == 1) {
-            this.typeOptions = res.data.data;
-          } else {
-            this.$message.error(res.data.msg);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-
-    getQuestionCategory() {
-      axios
-        .get("/category")
-        .then((res) => {
-          if (res.data.code == 1) {
-            this.categoryOptions = res.data.data;
+            this.categoryOptions = res.data.data.rows;
           } else {
             this.$message.error(res.data.msg);
           }
@@ -307,7 +276,6 @@ export default {
     },
     selectById(row){
       this.editDialogVisible=true
-      console.log(row.questionId)
       axios.get("/question?id="+row.questionId).then((res) => {
           if (res.data.code == 1) {
             this.editForm.id = res.data.data.questionId;
@@ -344,18 +312,18 @@ export default {
     /* 分页器改变 */
     handleSizeChange(val) {
       this.pageSize=val
-      this.pageSelect();
+      this.pageQuestionSelect();
       console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
       this.pageNo=val
-      this.pageSelect();
+      this.pageQuestionSelect();
       console.log(`当前页: ${val}`);
     },
-    pageSelect(){
-      axios.get("/question/"+this.pageNo+"/"+this.pageSize).then((res) => {
+    pageQuestionSelect(){
+      axios.get("/admin/questions/?page="+this.pageNo+"&pageSize="+this.pageSize+"&questionDesc="+this.keyword).then((res) => {
           if (res.data.code == 1) {
-            this.tableData = res.data.data.list;
+            this.questionData = res.data.data.rows;
             this.total=res.data.data.total
           } else {
             this.$message.error(res.data.msg);
@@ -367,32 +335,15 @@ export default {
     },
 
     /* 根据关键字检索 */
-    selectByKeyword(){
-      axios.get("/question/search",{
-        params: {
-          keyword: this.keyword,
-          pageNo: this.pageNo,
-          pageSize: this.pageSize,
-          typeId:this.selectedType,
-          categoryId:this.selectedCategory
-        },
-      }).then((res) => {
-          if (res.data.code == 1) {
-            this.tableData = res.data.data.list;
-            this.total=res.data.data.total
-          } else {
-            this.$message.error(res.data.msg);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    pageQuestionSearch(){
+      this.pageNo=1
+      this.pageQuestionSelect()
     },
     handleTypeChange(){
-      this.selectByKeyword()
+      this.pageQuestionSearch()
     },
     handleCategoryChange(){
-      this.selectByKeyword()
+      this.pageQuestionSearch()
     },
 
     // 根据题型的数字返回对应的名字
@@ -402,11 +353,11 @@ export default {
     return type ? type.typeName : ''; // 返回题型名字或空字符串
   },
 
-  // 根据题目分类的数字返回对应的名字
+  // 根据分类的数字返回对应的名字
   formatCategoryType(row) {
     const categoryId = row.questionCategory;
     const category = this.categoryOptions.find(option => option.categoryId === categoryId);
-    return category ? category.categoryName : ''; // 返回题型名字或空字符串
+    return category ? category.categoryName : ''; // 返回分类名字或空字符串
   },
   
   /* 根据id集合删除题目 */
@@ -424,7 +375,7 @@ export default {
           console.log(err);
         });
   },
-  addOne(){
+  addCategory(){
       axios.post("/question?type="+this.addForm.type+"&category="+this.addForm.category
       +"&content="+this.addForm.content+"&answer="+this.addForm.answer).then((res) => {
           if (res.data.code == 1) {
@@ -440,9 +391,9 @@ export default {
   },
   },
   mounted() {
-    this.getQuestionType();
-    this.getQuestionCategory();
-    this.pageSelect();
+    // this.getQuestionType();
+    // this.getQuestionCategory();
+    this.pageQuestionSelect();
   },
 };
 </script>

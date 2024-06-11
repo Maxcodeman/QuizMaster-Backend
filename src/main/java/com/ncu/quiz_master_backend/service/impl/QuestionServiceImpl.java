@@ -32,6 +32,7 @@ public class QuestionServiceImpl implements IQuestionService {
         Page<Question> p = (Page<Question>) questionList;
         return new PageBean(p.getTotal(),p.getResult());
     }
+
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void removeById(List<Integer> ids) {
