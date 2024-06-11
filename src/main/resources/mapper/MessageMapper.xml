@@ -6,9 +6,10 @@
         <where>
             <if test="adminId!=null">
                 admin_id = #{adminId}
+                <if test="startTime!=null and endTime !=null"> and </if>
             </if>
             <if test="startTime!=null and endTime !=null">
-                AND create_time between #{startTime} and #{endTime}
+                create_time between #{startTime} and #{endTime}
             </if>
         </where>
         order by message_id

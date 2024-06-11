@@ -12,10 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Note{
     private Integer noteId;
-
     private Integer userId;
-
     private Integer questionId;
-
     private String noteContent;
 }

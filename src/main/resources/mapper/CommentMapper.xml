@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ncu.quiz_master_backend.mapper.CommentMapper">
-
+    <select id="selectCommentByConditions" resultType="com.ncu.quiz_master_backend.entity.Comment">
+        select * from tb_comment
+        <where>
+            <if test="commentId!=null">
+                comment_id = #{commentId}
+                <if test="userId!=null"> AND </if>
+            </if>
+            <if test="userId!=null">
+                user_id = #{userId}
+                <if test="questionId!=null"> AND</if>
+            </if>
+            <if test="questionId!=null">
+                question_id = #{questionId}
+                <if test="startTime!=null and endTime !=null"> and </if>
+            </if>
+            <if test="startTime!=null and endTime !=null">
+                create_time between #{startTime} and #{endTime}
+            </if>
+        </where>
+        order by comment_id
+    </select>
 </mapper>
