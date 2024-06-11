@@ -1,5 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ncu.quiz_master_backend.mapper.UserMapper">
+    <select id="selectAll" resultType="com.ncu.quiz_master_backend.entity.User">
+        select * from tb_user
+        <where>
+            <if test="username!=null and username!=''">
+                username like concat('%',#{username},'%')
+            </if>
+            <if test="mobile!=null and mobile!=''">
+                and mobile = #{mobile}
+            </if>
+        </where>
+        order by user_id
+    </select>
 
+    <delete id="deleteById">
+        delete from tb_user where user_id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="update">
+        update tb_user
+        <set>
+            <if test="username!=null and username !=''">
+                username=#{username},
+            </if>
+            <if test="password!=null and password !=''">
+                password=#{password},
+            </if>
+            <if test="state!=null">
+                state=#{state},
+            </if>
+            <if test="updateTime!=null">
+                update_time=#{updateTime},
+            </if>
+            <if test="avatar!=null and avatar !=''">
+                avatar=#{avatar},
+            </if>
+            <if test="mobile!=null and mobile !=''">
+                mobile=#{mobile},
+            </if>
+        </set>
+        where user_id=#{userId}
+    </update>
 </mapper>

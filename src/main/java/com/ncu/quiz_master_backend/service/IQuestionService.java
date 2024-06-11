@@ -4,6 +4,7 @@ import com.ncu.quiz_master_backend.entity.PageBean;
 import com.ncu.quiz_master_backend.entity.Question;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface IQuestionService{
@@ -19,5 +20,5 @@ public interface IQuestionService{
 
     void modify(Question question);
 
-    void upload(MultipartFile file);
+    void upload(MultipartFile file) throws IOException;
 }
