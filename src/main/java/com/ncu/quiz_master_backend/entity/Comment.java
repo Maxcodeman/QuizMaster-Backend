@@ -13,12 +13,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Comment{
     private Integer commentId;
-
     private Integer userId;
-
     private Integer questionId;
-
     private String commentContent;
-
     private LocalDateTime createTime;
 }

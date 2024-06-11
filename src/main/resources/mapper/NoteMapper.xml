@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ncu.quiz_master_backend.mapper.NoteMapper">
+    <select id="selectNoteByConditions" resultType="com.ncu.quiz_master_backend.entity.Note">
+        select * from tb_note
+        <where>
+            <if test="userId!=null">
+                user_id = #{userId}
+                <if test="noteId!=null">AND</if> <!-- 添加AND仅当noteId也将被检查时 -->
+            </if>
+            <if test="noteId!=null">
+                note_id = #{noteId}
+            </if>
+        </where>
+    </select>
 
 </mapper>
