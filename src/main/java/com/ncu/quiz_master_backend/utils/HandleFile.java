@@ -32,8 +32,7 @@ public class HandleFile {
                 Cell optionCCell = row.getCell(3); //
                 Cell optionDCell = row.getCell(4); //
                 Cell answerCell = row.getCell(5); //
-                Cell categoryCell = row.getCell(6); //
-                Cell typeCell = row.getCell(7); //
+                Cell typeCell = row.getCell(6); //
 
                 question.setQuestionDesc(getCellStringValue(questionDescCell));
                 question.setOptionA(getCellStringValue(optionACell));
@@ -41,7 +40,6 @@ public class HandleFile {
                 question.setOptionC(getCellStringValue(optionCCell));
                 question.setOptionD(getCellStringValue(optionDCell));
                 question.setAnswer(getCellStringValue(answerCell));
-                question.setCategoryId(convertStringToInt(getCellStringValue(categoryCell)));
                 question.setType(convertStringToInt(getCellStringValue(typeCell)));
                 log.info("ExcelTest"+question.toString());
                 questionList.add(question);

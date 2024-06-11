@@ -20,5 +20,5 @@ public interface IQuestionService{
 
     void modify(Question question);
 
-    void upload(MultipartFile file) throws IOException;
+    void upload(MultipartFile file, Integer categoryId) throws IOException;
 }

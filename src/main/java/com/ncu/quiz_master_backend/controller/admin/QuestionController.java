@@ -53,8 +53,8 @@ public class QuestionController {
     }
 
     @PostMapping("/upload")
-    public Result upload(MultipartFile file) throws IOException {
-        iQuestionService.upload(file);
+    public Result upload(MultipartFile file, Integer categoryId) throws IOException {
+        iQuestionService.upload(file,categoryId);
         return Result.success();
     }
 }

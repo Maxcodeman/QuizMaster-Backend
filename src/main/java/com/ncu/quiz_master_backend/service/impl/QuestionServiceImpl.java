@@ -37,7 +37,9 @@ public class QuestionServiceImpl implements IQuestionService {
     public void removeById(List<Integer> ids) {
         questionMapper.deleteById(ids);
         //删完题目后更新分类表中对应的题目数量
-        for(int i=1;i<=3;i++){
+        //获取去重的分类ID列表
+        List<Integer> categoryIds = questionMapper.selectDistinctCategoryId();
+        for(Integer i :categoryIds){
             //获取该分类的题目总数
             int cnt = questionMapper.selectCountByCategoryId(i);
             //更新分类表的题目数
@@ -64,17 +66,19 @@ public class QuestionServiceImpl implements IQuestionService {
     }
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void upload(MultipartFile file) throws IOException {
-        /**
-         * TODO 在这里处理接收到的file文件
+    public void upload(MultipartFile file,Integer categoryId) throws IOException {
+        /*
+          TODO 在这里处理接收到的file文件
          */
         InputStream inputStream = file.getInputStream();
         List<Question> questionList=HandleFile.excelReader(inputStream);
         for(Question question:questionList){
             //逐项插入
+            question.setCategoryId(categoryId);
             questionMapper.insert(question);
         }
-        for(int i=1;i<=3;i++){
+        List<Integer> categoryIds = questionMapper.selectDistinctCategoryId();
+        for(Integer i :categoryIds){
             //获取该分类的题目总数
             int cnt = questionMapper.selectCountByCategoryId(i);
             //更新分类表的题目数

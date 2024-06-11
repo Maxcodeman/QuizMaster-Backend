@@ -28,4 +28,6 @@ public interface QuestionMapper {
 
     @Select("select category_id from tb_question where question_id=#{id}")
     int selectCategoryIdByQuestionId(Integer id);
+    @Select("select distinct category_id from tb_question")
+    List<Integer> selectDistinctCategoryId();
 }
