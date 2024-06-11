@@ -38,4 +38,7 @@ public interface QuestionMapper {
 
     @Select("select count(*) from tb_question where category_id = #{id}")
     int selectCountByCategoryId(Integer id);
+
+    @Select("select category_id from tb_question where question_id=#{id}")
+    int selectCategoryIdByQuestionId(Integer id);
 }

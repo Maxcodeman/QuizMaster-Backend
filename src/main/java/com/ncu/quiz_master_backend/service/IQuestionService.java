@@ -5,6 +5,7 @@ import com.ncu.quiz_master_backend.entity.Question;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -29,5 +30,5 @@ public interface IQuestionService{
 
     void modify(Question question);
 
-    void upload(MultipartFile file);
+    void upload(MultipartFile file) throws IOException;
 }

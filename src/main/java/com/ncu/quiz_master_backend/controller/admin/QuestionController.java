@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +63,7 @@ public class QuestionController {
     }
 
     @PostMapping("/upload")
-    public Result upload(MultipartFile file){
+    public Result upload(MultipartFile file) throws IOException {
         iQuestionService.upload(file);
         return Result.success();
     }
