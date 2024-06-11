@@ -2,26 +2,16 @@
   <div class="personal-center-page">
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
   <el-form-item label="管理员ID" prop="id">
-    <el-input v-model="ruleForm.id" :disabled="true"></el-input>
+    <el-input v-model="ruleForm.adminId" :disabled="true"></el-input>
   </el-form-item>
-  <el-form-item label="管理员名字" prop="name">
-    <el-input v-model="ruleForm.name"></el-input>
+  <el-form-item label="管理员名称" prop="name">
+    <el-input v-model="ruleForm.adminName"></el-input>
   </el-form-item>
-  <el-form-item label="状态" prop="state">
-    <el-input placeholder="正常" :disabled="true" v-if="this.ruleForm.state==1"></el-input>
-    <el-input placeholder="冻结" :disabled="true" v-else></el-input>
-  </el-form-item>
-  <el-form-item label="创建时间" prop="create">
-    <el-input v-model="ruleForm.create" :disabled="true"></el-input>
-  </el-form-item>
-  <el-form-item label="更新时间" prop="update">
-    <el-input v-model="ruleForm.update" :disabled="true"></el-input>
-  </el-form-item>
-  <el-form-item label="手机号码" prop="telephone">
-    <el-input v-model="ruleForm.telephone"></el-input>
+  <el-form-item label="手机号码" prop="mobile">
+    <el-input v-model="ruleForm.mobile"></el-input>
   </el-form-item>
   <el-form-item>
-    <el-button type="primary" @click="submitForm('ruleForm')">修改</el-button>
+    <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
   </el-form-item>
 </el-form>
   </div>
@@ -29,24 +19,27 @@
 
 <script>
 import axios from '@/api/axios';
+import {jwtDecode} from "jwt-decode";
 export default {
    data() {
       return {
         ruleForm: {
-          id: '',
-          name: '',
-          state: '',
-          create: '',
-          update: '',
-          telephone:'',
+          adminId: '',
+          adminName: '',
+          mobile:'',
         },
         rules: {
-          name: [
+          adminName: [
             { required: true, message: '请输入名字', trigger: 'blur' },
             { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
           ],
-          telephone: [
-            { required: true, message: '请填写手机号码', trigger: 'blur' }
+          mobile: [
+            { required: true, message: '请填写手机号码', trigger: 'blur' },
+            {
+              pattern: /^1[3456789]\d{9}$/,
+              message: "手机号码格式不正确",
+              trigger: ["blur", "change"],
+            },
           ]
         }
       };
@@ -55,23 +48,19 @@ export default {
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
+            this.updateInfo()
           } else {
-            console.log('error submit!!');
-            return false;
+            this.$message.error("信息格式有误")
           }
         });
       },
+      //获取个人信息
       getInfo(){
-        axios.get("/admin/info").then(
+        axios.get("/admin/admins/"+this.ruleForm.adminId).then(
           (res)=>{
               if(res.data.code==1){
-                this.ruleForm.id=res.data.data.adminId
-                this.ruleForm.name=res.data.data.adminName
-                this.ruleForm.state=res.data.data.adminState
-                this.ruleForm.create=res.data.data.createTime
-                this.ruleForm.update=res.data.data.updateTime
-                this.ruleForm.telephone=res.data.data.telephone
+                this.ruleForm.adminName=res.data.data.adminName
+                this.ruleForm.mobile=res.data.data.mobile
               }else{
                 this.$message.error(res.data.msg)
               }
@@ -82,13 +71,14 @@ export default {
           }
         )
       },
-      changeInfo(){
-        axios.put("/admin/info?id="+this.ruleForm.id+"&name="+this.ruleForm.name+"&telephone="+this.ruleForm.telephone).then(
+      //保存个人信息
+      updateInfo(){
+        axios.put("/admin/admins",this.ruleForm).then(
           (res)=>{
               if(res.data.code==1){
-                this.$message.success("修改个人信息成功")
+                this.$message.success("保存成功")
               }else{
-                this.$message.error(res.data.msg)
+                this.$message.error("保存失败")
               }
           }
         ).catch(
@@ -96,10 +86,31 @@ export default {
             console.log(err)
           }
         )
+      },
+
+      //获取token
+      getToken() {
+        return localStorage.getItem('token');
+      },
+      //解析token
+      parseToken(){
+        const token=this.getToken();
+        if(token){
+          try{
+            const decodedToken=jwtDecode(token)
+            this.ruleForm.adminId=decodedToken.id
+          }catch (err){
+            console.error('解析Token失败',err)
+          }
+        }else{
+          console.warn('在本地存储中没有token')
+        }
       }
+
     },
     mounted() {
-        this.getInfo()
+      this.parseToken()
+      this.getInfo()
       },
 };
 </script>

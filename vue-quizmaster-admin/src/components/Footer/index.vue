@@ -1,6 +1,6 @@
 <template>
           <div class="footer">
-             Copyright @ MaxCodeMan
+             Copyright @ NcuSoft
           </div>
 </template>
 

@@ -14,12 +14,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Message {
     private Integer messageId;
-
     private Integer adminId;
-
     private String messageContent;
-
     private LocalDateTime createTime;
-    //浏览量
-    private Integer view;
+    private Integer view; //浏览量
 }

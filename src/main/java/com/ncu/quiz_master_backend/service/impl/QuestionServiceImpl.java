@@ -18,14 +18,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-/**
- * <p>
- *  服务实现类
- * </p>
- *
- * @author max
- * @since 2023-12-04
- */
 @Service
 public class QuestionServiceImpl implements IQuestionService {
     @Autowired

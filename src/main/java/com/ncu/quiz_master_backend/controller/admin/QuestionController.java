@@ -1,8 +1,6 @@
 package com.ncu.quiz_master_backend.controller.admin;
 
 
-import com.baomidou.mybatisplus.core.metadata.OrderItem;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ncu.quiz_master_backend.entity.PageBean;
 import com.ncu.quiz_master_backend.entity.Question;
 import com.ncu.quiz_master_backend.entity.Result;
@@ -15,16 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-/**
- * <p>
- *  前端控制器
- * </p>
- *
- * @author max
- * @since 2023-12-04
- */
+
 @Slf4j
 @RestController
 @RequestMapping("/admin/questions")

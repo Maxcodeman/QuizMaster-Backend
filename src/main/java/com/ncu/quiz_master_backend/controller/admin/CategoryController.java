@@ -14,14 +14,6 @@ import javax.swing.plaf.PanelUI;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * <p>
- *  前端控制器
- * </p>
- *
- * @author max
- * @since 2023-12-04
- */
 @Slf4j
 @RestController
 @RequestMapping("/admin/categories")
