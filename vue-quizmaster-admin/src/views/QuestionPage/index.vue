@@ -2,7 +2,7 @@
   <div class="question-page">
     <div class="import-button">
       <el-button type="primary"
-      >导入<i class="el-icon-upload el-icon--right"></i
+      >导入<i class="el-icon-upload el-icon--right" @click="importDialogVisible=true"></i
       ></el-button>
     </div>
 
@@ -123,34 +123,41 @@
     </el-dialog>
 
     <!-- 导入题目对话框 -->
-    <el-dialog title="导入题目" :visible.sync="editDialogVisible" width="30%">
+    <el-dialog title="导入题目" :visible.sync="importDialogVisible" width="30%">
 
       <el-form
           :model="importForm"
           ref="importForm">
         <el-form-item label="分类" prop="category">
-          <el-select placeholder="请选择分类" v-model="updateForm.categoryId">
+          <el-select placeholder="请选择分类" v-model="importForm.categoryId" clearable>
             <el-option v-for="item in categoryOptions" :key="item.categoryId" :label="item.categoryName"
                        :value="item.categoryId"></el-option>
           </el-select>
 
-          <el-form-item label="分类" prop="category">
-            <el-select placeholder="请选择分类" v-model="updateForm.categoryId">
-              <el-option v-for="item in categoryOptions" :key="item.categoryId" :label="item.categoryName"
-                         :value="item.categoryId"></el-option>
-            </el-select>
+          <el-form-item label="上传文件" style="margin-top: 10px">
+            <el-upload
+                class="upload-demo"
+                ref="upload"
+                action="http://localhost:8080/admin/questions/upload"
+                :headers="uploadHeader"
+                :auto-upload="false"
+                :before-upload="beforeUpload"
+                :on-success="handleSuccess"
+                :on-error="handleError"
+                :data="importForm"
+                :limit="1"
+                :multiple="false"
+                :file-list="fileList"
+                accept=".xlsx,.xls">
+              <el-button slot="trigger"  type="primary">选取文件</el-button>
+              <el-button style="margin-left: 10px;"  type="success" @click="submitUpload">上传到服务器</el-button>
+              <div slot="tip" class="el-upload__tip">只能上传xlsx/xls文件，且不超过10mb</div>
+            </el-upload>
           </el-form-item>
         </el-form-item>
 
 
       </el-form>
-
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="editDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click=" () => {editDialogVisible = false;updateQuestion(); }"
-        >保存</el-button
-        >
-      </span>
     </el-dialog>
 
     <!-- 编辑题目对话框 -->
@@ -276,6 +283,12 @@ import axios from "@/api/axios";
 export default {
   data() {
     return {
+      //上传文件请求头
+      uploadHeader:{
+        token: localStorage.getItem("token")
+      },
+      //上传文件列表
+      fileList: [],
       /*表格数据*/
       questionData: [],
       //关键词
@@ -318,6 +331,8 @@ export default {
       /* 当前选中的题型和题目分类 */
       selectedType: "",
       selectedCategoryId: "",
+      /*导入对话框的可视性*/
+      importDialogVisible:false,
       /* 确认删除对话框的可视性 */
       deleteDialogVisible: false,
       /* 编辑对话框的可视性 */
@@ -332,6 +347,41 @@ export default {
   },
 
   methods: {
+    beforeUpload(file) {
+      const isExcel = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || file.type === 'application/vnd.ms-excel';
+      const isLt10M = file.size / 1024 / 1024 < 10;
+
+      if (!isExcel) {
+        this.$message.error('上传文件格式必须为 XLSX 或 XLS!');
+        return false;
+      }
+      if (!isLt10M) {
+        this.$message.error('上传文件大小不能超过 10MB!');
+        return false;
+      }
+      return true;
+    },
+    handleSuccess(res, file, fileList) {
+      if (res.code==1) {
+        console.log(file)
+        console.log(fileList)
+        this.$message.success('文件上传成功');
+        this.importDialogVisible = false;
+        this.pageQuestionSelect();
+      } else {
+        this.$message.error('文件上传失败');
+      }
+    },
+    handleError(err, file, fileList) {
+      console.log(file)
+      console.log(fileList)
+      this.$message.error('文件上传失败');
+    },
+
+    submitUpload() {
+      this.$refs.upload.submit();
+    },
+
     toggleSelection(rows) {
       if (rows) {
         rows.forEach((row) => {
