@@ -132,12 +132,12 @@ export default {
     /* 分页器改变 */
     handleSizeChange(val) {
       this.pageSize=val
-      this.pageSelect();
+      this.pageAdminSelect();
       console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
       this.pageNo=val
-      this.pageSelect();
+      this.pageAdminSelect();
       console.log(`当前页: ${val}`);
     },
 
@@ -217,6 +217,5 @@ export default {
 }
 .pagination {
   margin: 150px;
-
 }
 </style>
