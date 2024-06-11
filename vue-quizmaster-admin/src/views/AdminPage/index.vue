@@ -39,78 +39,35 @@
           </el-form>
         </template>
       </el-table-column>
-
-      <el-table-column label="操作" width="120">
-        <template slot-scope="scope">
-          <el-button @click="selectById(scope.row)"
-          >编辑</el-button
-          >
-          <el-button type="danger" @click="deleteDialogVisible = true"
-          >删除</el-button
-          >
-        </template>
-      </el-table-column>
     </el-table>
-
-    <!-- 确认删除对话框 -->
-    <el-dialog title="确认删除" :visible.sync="deleteDialogVisible" width="30%">
-      <i class="el-icon-warning">确定删除该管理员吗?</i>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="deleteDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click=" () => { deleteDialogVisible = false; deleteAdmin(); }"
-        >确 定</el-button
-        >
-      </span>
-    </el-dialog>
-
-    <!-- 编辑题目对话框 -->
-    <el-dialog title="编辑题目" :visible.sync="editDialogVisible" width="30%">
-
-      <el-form
-          :model="updateForm"
-          ref="editForm">
-        <el-form-item label="管理员id" prop="id">
-          <el-input v-model="updateForm.id" disabled></el-input>
-        </el-form-item>
-        <el-form-item label="管理员名称" prop="type">
-          <el-input v-model="updateForm.name" disabled></el-input>
-        </el-form-item>
-
-        <el-form-item label="手机号" prop="category">
-          <el-input v-model="updateForm.mobile"></el-input>
-        </el-form-item>
-
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="editDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click=" () => {editDialogVisible = false;updateAdmin(); }"
-        >保存</el-button
-        >
-      </span>
-      </el-form>
-    </el-dialog>
 
     <!-- 新增对话框 -->
     <el-dialog title="添加管理员" :visible.sync="addDialogVisible" width="30%">
 
       <el-form
           :model="addForm"
+          :rules="rules"
           ref="addForm">
         <el-form-item label="管理员名称" prop="name">
-          <el-input v-model="addForm.name"></el-input>
+          <el-input v-model="addForm.adminName"></el-input>
         </el-form-item>
 
         <el-form-item label="手机号" prop="mobile">
           <el-input v-model="addForm.mobile"></el-input>
         </el-form-item>
 
-      <span slot="footer" class="dialog-footer">
+        <el-form-item label="密码" prop="mobile">
+          <el-input show-password v-model="addForm.password"></el-input>
+        </el-form-item>
+      </el-form>
+
+      <div slot="footer" class="dialog-footer">
         <el-button @click="addDialogVisible = false">取 消</el-button>
         <el-button
-         type="primary" @click=" () => {addDialogVisible = false;addAdmin(); }"
+            type="primary" @click=" () => {addDialogVisible = false;addAdmin(); }"
         >保存</el-button
         >
-      </span>
-      </el-form>
+      </div>
     </el-dialog>
 
     <div class="pagination">
@@ -137,23 +94,31 @@ export default {
       adminData: [],
       //关键词
       keyword:"",
-      /* 编辑表单 */
-      updateForm:{
-        id:"",
-        name:"",
-        mobile:"",
-      },
       /* 新增表单 */
       addForm:{
-        id:"",
-        name:"",
+        adminId:"",
+        adminName:"",
         mobile:"",
       },
-
-      /* 确认删除对话框的可视性 */
-      deleteDialogVisible: false,
-      /* 编辑对话框的可视性 */
-      editDialogVisible:false,
+      //新增表单字段规则
+      rules: {
+        adminName: [
+          { required: true, message: '请输入名字', trigger: 'blur' },
+          { min: 1, max: 100, message: '长度在 1 到 100 个字符', trigger: 'blur' }
+        ],
+        mobile: [
+          { required: true, message: '请填写手机号码', trigger: 'blur' },
+          {
+            pattern: /^1[3456789]\d{9}$/,
+            message: "手机号码格式不正确",
+            trigger: ["blur", "change"],
+          },
+        ],
+        password:[
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { min: 1, max: 25, message: '长度在 1 到 25 个字符', trigger: 'blur' }
+        ]
+      },
       /* 添加对话框的可视性 */
       addDialogVisible:false,
       /* 当前页码和页面尺寸及页数(已设置默认值) */
@@ -192,26 +157,28 @@ export default {
 
     //新增管理员
     addAdmin(){
-      axios.get("/admin/admins",this.addForm).then((res) => {
-        if (res.data.code == 1) {
-          this.$message.success("添加成功")
+      this.$refs.addForm.validate(valid => {
+        if (valid) {
+          // 验证通过，执行添加操作
+          axios.post("/admin/admins", this.addForm)
+              .then((res) => {
+                if (res.data.code === 1) {
+                  this.$message.success("添加成功");
+                  location.reload()
+                  // 可能还需要重置表单或关闭对话框等操作
+                } else {
+                  this.$message.error(res.data.msg);
+                }
+              })
+              .catch((err) => {
+                console.log(err);
+              });
         } else {
-          this.$message.error(res.data.msg);
+          // 验证未通过，可选择给出提示或处理错误
+          this.$message.warning("请检查表单填写是否有误！");
+          return false; // 阻止后续操作
         }
-      })
-          .catch((err) => {
-            console.log(err);
-          });
-    },
-
-    //修改管理员
-    updateAdmin(){
-
-    },
-
-    //删除管理员
-    deleteAdmin(){
-
+      });
     },
 
     /* 根据关键字检索 */
