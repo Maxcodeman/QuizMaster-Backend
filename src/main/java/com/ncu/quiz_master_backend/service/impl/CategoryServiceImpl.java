@@ -4,25 +4,15 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.ncu.quiz_master_backend.entity.Category;
 import com.ncu.quiz_master_backend.entity.PageBean;
-import com.ncu.quiz_master_backend.entity.Question;
 import com.ncu.quiz_master_backend.mapper.CategoryMapper;
 import com.ncu.quiz_master_backend.mapper.QuestionMapper;
 import com.ncu.quiz_master_backend.service.ICategoryService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-/**
- * <p>
- *  服务实现类
- * </p>
- *
- * @author max
- * @since 2023-12-04
- */
 @Service
 public class CategoryServiceImpl implements ICategoryService {
     @Autowired

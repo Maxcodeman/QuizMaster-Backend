@@ -1,23 +1,10 @@
 package com.ncu.quiz_master_backend.mapper;
 
-import com.ncu.quiz_master_backend.entity.Category;
 import com.ncu.quiz_master_backend.entity.Question;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.*;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.LocalDate;
 import java.util.List;
 
-/**
- * <p>
- *  Mapper 接口
- * </p>
- *
- * @author max
- * @since 2023-12-04
- */
 @Mapper
 public interface QuestionMapper {
 
@@ -38,4 +25,7 @@ public interface QuestionMapper {
 
     @Select("select count(*) from tb_question where category_id = #{id}")
     int selectCountByCategoryId(Integer id);
+
+    @Select("select category_id from tb_question where question_id=#{id}")
+    int selectCategoryIdByQuestionId(Integer id);
 }

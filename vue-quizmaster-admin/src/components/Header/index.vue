@@ -4,14 +4,6 @@
     <div class="breadcrumb">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item to="/">首页</el-breadcrumb-item>
-        <el-breadcrumb-item
-          v-if="
-            $route.name == 'question' ||
-            $route.name == 'category' ||
-            $route.name == 'type'
-          "
-          >内容管理</el-breadcrumb-item
-        >
         <el-breadcrumb-item to="/questionPage" v-if="$route.name == 'question'"
           >题目管理</el-breadcrumb-item
         >
@@ -41,13 +33,19 @@
         <el-breadcrumb-item to="/commentPage" v-else-if="$route.name == 'comment'"
           >评论管理</el-breadcrumb-item
         >
+        <el-breadcrumb-item to="/adminPage" v-else-if="$route.name == 'admin'"
+        >管理员管理</el-breadcrumb-item
+        >
       </el-breadcrumb>
     </div>
 
     <div class="personal-center">
       <el-dropdown>
+
+
         <el-avatar icon="el-icon-user-solid">
           </el-avatar>
+        <span>{{adminId}}</span>
           <el-dropdown-menu slot="dropdown" >
             <el-dropdown-item @click.native="personalCenter"><i class="el-icon-info"></i>个人信息</el-dropdown-item>
             <el-dropdown-item @click.native="changePassword"><i class="el-icon-setting"></i>修改密码</el-dropdown-item>
@@ -59,9 +57,13 @@
 </template>
 
 <script>
+import {jwtDecode} from "jwt-decode";
+
 export default {
   data() {
-    return {};
+    return {
+      adminId:""
+    };
   },
 
   methods: {
@@ -83,10 +85,30 @@ export default {
     clickTest(){
       console.log('Test Clicked');
     },
+    //获取token
+    getToken() {
+      return localStorage.getItem('token');
+    },
+    //解析token
+    parseToken(){
+      const token=this.getToken();
+      if(token){
+        try{
+          const decodedToken=jwtDecode(token)
+          this.adminId=decodedToken.id
+        }catch (err){
+          console.error('解析Token失败',err)
+        }
+      }else{
+        console.warn('在本地存储中没有token')
+      }
+    }
   },
 
   /* 页面挂载时执行的方法列表 */
-  mounted() {},
+  mounted() {
+    this.parseToken()
+  },
 };
 </script>
 

@@ -13,20 +13,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class User{
     private Integer userId;
-
     private String username;
-
     private String password;
-
     //用户状态
     private Boolean state;
-
     private LocalDateTime createTime;
-
     private LocalDateTime updateTime;
-
-    private Integer preference;
-
     //用户头像（URL地址）
     private String avatar;
+    private String mobile;
 }
