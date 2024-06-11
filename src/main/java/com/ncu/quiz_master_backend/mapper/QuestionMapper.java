@@ -5,14 +5,6 @@ import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
-/**
- * <p>
- *  Mapper 接口
- * </p>
- *
- * @author max
- * @since 2023-12-04
- */
 @Mapper
 public interface QuestionMapper {
 

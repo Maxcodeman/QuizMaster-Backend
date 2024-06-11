@@ -13,14 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-/**
- * <p>
- *  服务实现类
- * </p>
- *
- * @author max
- * @since 2023-12-04
- */
 @Service
 public class CategoryServiceImpl implements ICategoryService {
     @Autowired
