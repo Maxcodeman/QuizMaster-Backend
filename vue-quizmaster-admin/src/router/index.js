@@ -88,6 +88,22 @@ const routes = [
           title:"资讯管理"
         }
       },
+      {
+        path:"favoritePage",
+        component:() => import("@/views/FavoritePage"),
+        name:"favorite",
+        meta:{
+          title:"收藏夹管理"
+        }
+      },
+      {
+        path:"wrongPage",
+        component:() => import("@/views/WrongPage"),
+        name:"wrong",
+        meta:{
+          title:"错题本管理"
+        }
+      },
     ]
   },
 
