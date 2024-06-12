@@ -80,6 +80,13 @@ const routes = [
         meta:{
           title:"管理员管理"
         }
+      },{
+        path:"messagePage",
+        component:() => import("@/views/MessagePage"),
+        name:"message",
+        meta:{
+          title:"资讯管理"
+        }
       },
     ]
   },

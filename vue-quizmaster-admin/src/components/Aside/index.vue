@@ -26,7 +26,7 @@
 
         <el-menu-item index="5" route="/commentPage"><i class="el-icon-chat-dot-square"></i>评论管理</el-menu-item>
 
-        <el-menu-item index="6" route="/commentPage"><i class="el-icon-message"></i>资讯管理</el-menu-item>
+        <el-menu-item index="6" route="/messagePage"><i class="el-icon-message"></i>资讯管理</el-menu-item>
 
         <el-menu-item index="7" route="/userPage"><i class="el-icon-user"></i>用户管理
 
