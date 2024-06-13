@@ -1,16 +1,17 @@
 package com.ncu.quiz_master_backend.service;
 
 import com.ncu.quiz_master_backend.entity.Note;
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.ncu.quiz_master_backend.entity.PageBean;
 
-/**
- * <p>
- *  服务类
- * </p>
- *
- * @author max
- * @since 2023-12-04
- */
-public interface INoteService extends IService<Note> {
+public interface INoteService {
 
+    PageBean selectNoteByConditions(Integer userId, Integer noteId, Integer page, Integer pageSize);
+
+    void deleteById(Integer id);
+
+    void insertNote(Integer userId, Integer questionId, String noteContent);
+
+    Note selectById(Integer id);
+
+    void updateNote(Integer noteId, Integer userId, Integer questionId, String noteContent);
 }

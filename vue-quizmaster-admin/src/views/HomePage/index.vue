@@ -1,12 +1,8 @@
 <template>
   <div class="home-page">
     <el-carousel :interval="4000" type="card" height="250px">
-      <el-carousel-item v-for="item in 5" :key="item">
-        <h2 class="medium" v-if="item==1">欢迎</h2>
-        <h2 class="medium" v-if="item==2">来到</h2>
-        <h2 class="medium" v-if="item==3">首页</h2>
-        <h2 class="medium" v-if="item==4">孙老师yyds</h2>
-        <h2 class="medium" v-if="item==5">求求老师给孩子个高分吧</h2>
+      <el-carousel-item v-for="item in 1" :key="item">
+        <h2 class="medium" v-if="item==1">欢迎使用刷题宝后台管理系统</h2>
       </el-carousel-item>
     </el-carousel>
   </div>
@@ -18,7 +14,7 @@ export default {};
 
 <style>
 .home-page {
-  padding: 100px;
+  padding: 120px;
 }
 .el-carousel__item h3 {
     color: #475669;

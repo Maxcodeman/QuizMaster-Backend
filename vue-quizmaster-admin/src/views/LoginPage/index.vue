@@ -66,7 +66,7 @@ export default {
           //去后台验证用户名密码，并返回token
           /* 先判断用户类型,再调用对应接口 */
             this.$axios
-            .post("/login?remember="+this.remember, this.loginForm)
+            .post("/admin/login?remember="+this.remember, this.loginForm)
             .then((res) => {
               console.log(res.data);
               if (res.data.code == 1) {
@@ -93,7 +93,7 @@ export default {
   width: 100%;
   height: 100%;
   position: fixed;
-  background: url("../../assets/interview.jpg");
+  background: url("../../assets/login_background.jpg");
   background-size: 100% ;
 }
 .loginDiv {

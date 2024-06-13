@@ -1,7 +1,8 @@
 package com.ncu.quiz_master_backend.service;
 
 import com.ncu.quiz_master_backend.entity.Category;
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.ncu.quiz_master_backend.entity.PageBean;
+import com.ncu.quiz_master_backend.entity.Question;
 
 import java.util.List;
 
@@ -13,15 +14,16 @@ import java.util.List;
  * @author max
  * @since 2023-12-04
  */
-public interface ICategoryService extends IService<Category> {
+public interface ICategoryService {
 
-    List<Category> getAllCategories();
 
-    Integer addCategory(String categoryName);
+    PageBean listAll(Integer page, Integer pageSize, String categoryName);
 
-    int deleteByIds(List<Long> ids);
+    void removeById(Integer id);
 
-    Category selectById(Integer id);
+    void addOne(String categoryName);
 
-    int editById(Integer id, String name);
+    Category getById(Integer id);
+
+    void modify(Category category);
 }

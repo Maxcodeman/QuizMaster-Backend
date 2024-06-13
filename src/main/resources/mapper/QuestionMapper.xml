@@ -1,5 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ncu.quiz_master_backend.mapper.QuestionMapper">
+    <select id="selectAll" resultType="com.ncu.quiz_master_backend.entity.Question">
+        select * from tb_question
+        <where>
+            <if test="questionDesc!=null and questionDesc!=''">
+                question_desc like concat('%',#{questionDesc},'%')
+            </if>
+            <if test="categoryId!=null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="type!=null">
+                and type = #{type}
+            </if>
+        </where>
+        order by question_id
+    </select>
 
+    <delete id="deleteById">
+        delete from tb_question where question_id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="update">
+        update tb_question
+        <set>
+            <if test="questionDesc!=null and questionDesc !=''">
+                question_desc=#{questionDesc},
+            </if>
+            <if test="optionA!=null and optionA !=''">
+                option_a=#{optionA},
+            </if>
+            <if test="optionB!=null and optionB !=''">
+                option_b=#{optionB},
+            </if>
+            <if test="optionC!=null and optionC !=''">
+                option_c=#{optionC},
+            </if>
+            <if test="optionD!=null and optionD !=''">
+                option_d=#{optionD},
+            </if>
+            <if test="answer!=null and answer !=''">
+                answer=#{answer},
+            </if>
+            <if test="categoryId!=null">
+                category_id=#{categoryId},
+            </if>
+            <if test="type!=null">
+                type=#{type},
+            </if>
+        </set>
+        where question_id=#{questionId}
+    </update>
 </mapper>

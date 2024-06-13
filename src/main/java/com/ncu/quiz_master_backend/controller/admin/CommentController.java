@@ -1,20 +1,51 @@
 package com.ncu.quiz_master_backend.controller.admin;
 
 
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.ncu.quiz_master_backend.anno.Log;
+import com.ncu.quiz_master_backend.entity.Comment;
+import com.ncu.quiz_master_backend.entity.PageBean;
+import com.ncu.quiz_master_backend.entity.Result;
+import com.ncu.quiz_master_backend.service.ICommentService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RestController;
+import java.time.LocalDateTime;
 
-/**
- * <p>
- *  前端控制器
- * </p>
- *
- * @author max
- * @since 2023-12-04
- */
+@Slf4j
 @RestController
-@RequestMapping("/comment")
+@RequestMapping("/admin/comments")
 public class CommentController {
+    @Autowired
+    private ICommentService iCommentService;
+
+    @GetMapping
+    public Result selectCommentByConditions(Integer commentId,
+                                            Integer userId,
+                                            Integer questionId,
+                                            LocalDateTime startTime,
+                                            LocalDateTime endTime,
+                                            @RequestParam(defaultValue = "1") Integer page,
+                                            @RequestParam(defaultValue = "10") Integer pageSize){
+        log.info("commentId:{},userID:{},QuestionID:{}, startTime:{},endTime:{},page:{},pageSize:{}",
+                commentId, userId, questionId, startTime, endTime, page, pageSize);
+        PageBean pageBean = iCommentService.selectCommentByConditions(commentId, userId, questionId, startTime, endTime, page, pageSize);
+        return Result.success(pageBean);
+    }
+
+    @Log
+    @DeleteMapping("/{id}")
+    public Result deleteById(@PathVariable Integer id){
+        log.info("delete id={}",id);
+        iCommentService.deleteById(id);
+        return Result.success();
+    }
+
+    @GetMapping("/{id}")
+    public Result selectById(@PathVariable Integer id){
+        log.info("select by id = {}", id);
+        Comment comment = iCommentService.selectById(id);
+        return Result.success(comment);
+    }
 
 }

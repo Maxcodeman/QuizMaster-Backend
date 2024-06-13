@@ -1,101 +1,66 @@
 package com.ncu.quiz_master_backend.controller.admin;
 
 
-import com.baomidou.mybatisplus.core.metadata.OrderItem;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ncu.quiz_master_backend.anno.Log;
+import com.ncu.quiz_master_backend.entity.PageBean;
 import com.ncu.quiz_master_backend.entity.Question;
 import com.ncu.quiz_master_backend.entity.Result;
 import com.ncu.quiz_master_backend.service.IQuestionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-/**
- * <p>
- *  前端控制器
- * </p>
- *
- * @author max
- * @since 2023-12-04
- */
+
 @Slf4j
 @RestController
-@RequestMapping("/question")
+@RequestMapping("/admin/questions")
 public class QuestionController {
     @Autowired
     private IQuestionService iQuestionService;
-
     @GetMapping
-    public Result selectById(@RequestParam Long id){
-        Question question=iQuestionService.selectById(id);
-        if(question==null){
-            return Result.error("获取题目失败");
-        }else {
-            log.info("根据id查询到的题目:{}",question);
-            return Result.success(question);
-        }
+    public Result listAll(@RequestParam(defaultValue = "1") Integer page,
+                          @RequestParam(defaultValue = "10") Integer pageSize,
+                          String questionDesc, Integer categoryId, Integer type){
+        PageBean pageBean = iQuestionService.listAll(page,pageSize,questionDesc,categoryId,type);
+        return Result.success(pageBean);
     }
 
-    @GetMapping("/{pageNo}/{pageSize}")
-    public Result PageQuery(@PathVariable Integer pageNo, @PathVariable Integer pageSize){
-        Page<Question> page=Page.of(pageNo,pageSize);
-        page.addOrder(new OrderItem("question_id",true));
-        iQuestionService.page(page);
-
-        List<Question> questionList=page.getRecords();
-
-        //创建包含额外信息的Map
-        Map<String,Object> res=new HashMap<>();
-        res.put("list",questionList);
-        res.put("total",page.getTotal());
-        return Result.success(res);
-    }
-
-    /*根据多项条件检索*/
-    @GetMapping("/search")
-    public Result selectByKeyword(@RequestParam(required = false) String keyword,@RequestParam Integer pageNo,@RequestParam Integer pageSize,
-                                  @RequestParam(required = false) Integer typeId,@RequestParam(required = false) Integer categoryId){
-        Map<String,Object> res= iQuestionService.selectByKeyword(keyword,typeId,categoryId,pageNo,pageSize);
-        if(res==null){
-            return Result.error("根据条件检索失败");
-        }else {
-            return Result.success(res);
-        }
-    }
-
+    @Log
     @DeleteMapping("/{ids}")
-    public Result deleteByIds(@PathVariable List<Long> ids){
-        int columns=iQuestionService.deleteByIds(ids);
-        log.info("删除的行数:"+columns);
+    public Result removeById(@PathVariable List<Integer> ids){
+        iQuestionService.removeById(ids);
         return Result.success();
     }
 
-    @PutMapping
-    public Result editById(@RequestParam Long id,@RequestParam(required = false) Integer type,@RequestParam(required = false)
-    Integer category,@RequestParam(required = false) String content,@RequestParam(required = false) String answer){
-
-        int column = iQuestionService.editById(id,type,category,content,answer);
-        log.info("修改的行数:"+column);
-        if(column==1){
-            return Result.success();
-        }else{
-            return Result.error("修改失败");
-        }
+    @Log
+    @PostMapping
+    public Result addOne(@RequestBody Question question){
+        iQuestionService.addOne(question);
+        return Result.success();
     }
 
-    @PostMapping
-    public Result addOne(@RequestParam Integer type,@RequestParam
-    Integer category,@RequestParam String content,@RequestParam String answer){
+    @GetMapping("/{id}")
+    public Result getById(@PathVariable Integer id){
+        Question question=iQuestionService.getById(id);
+        return Result.success(question);
+    }
 
-        int column = iQuestionService.addOne(type,category,content,answer);
-        if(column==1){
-            return Result.success();
-        }else{
-            return Result.error("修改失败");
-        }
+    @Log
+    @PutMapping
+    public Result modify(@RequestBody Question question){
+        iQuestionService.modify(question);
+        return Result.success();
+    }
+
+    @Log
+    @PostMapping("/upload")
+    public Result upload(MultipartFile file, Integer categoryId) throws IOException {
+        iQuestionService.upload(file,categoryId);
+        return Result.success();
     }
 }

@@ -1,9 +1,10 @@
 package com.ncu.quiz_master_backend.controller.admin;
 
-
+import com.ncu.quiz_master_backend.anno.Log;
 import com.ncu.quiz_master_backend.entity.Admin;
+import com.ncu.quiz_master_backend.entity.PageBean;
 import com.ncu.quiz_master_backend.entity.Result;
-import com.ncu.quiz_master_backend.service.IAdminService;
+import com.ncu.quiz_master_backend.service.AdminService;
 import com.ncu.quiz_master_backend.utils.JwtUtils;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,75 +12,133 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * <p>
- *  前端控制器
- * </p>
- *
- * @author max
- * @since 2023-12-04
- */
+import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
+
 @Slf4j
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
     @Autowired
-    private IAdminService iAdminService;
+    private AdminService adminService;
 
-    /*从token中获取个人ID*/
-    @GetMapping("/id")
-    public Result getId(HttpServletRequest request){
-        /*获取请求头中的令牌*/
-        String token=request.getHeader("token");
-
-        /*解析出令牌中的id信息*/
-        Claims claims = JwtUtils.parseJWT(token);
-        String id=claims.get("id").toString();
-
-        return Result.success(id);
+    /**
+     * 管理员登录（可以选择是否保持登录状态）
+     * @param admin
+     * @param remember
+     * @return
+     */
+    @PostMapping("/login")
+    public Result adminLogin(@RequestBody Admin admin,@RequestParam(required=false) Boolean remember){
+        //传递的密码
+        String password=admin.getPassword();
+        //获取传递的管理员id
+        int id=admin.getAdminId();
+        //查询是否有对应的管理员
+        Admin a = adminService.queryById(id);
+        //数据库中没有该管理员信息
+        if(a==null){
+            return Result.error("登录失败，不存在该账户");
+            //密码不正确
+        }else if(!a.getPassword().equals(password)){
+            return Result.error("登录失败，密码不正确");
+        }else{
+            log.info("管理员登录: {}",a);
+            Map<String,Object> claims=new HashMap<>();
+            claims.put("id",a.getAdminId());
+            claims.put("admin_name",a.getAdminName());
+            //jwt令牌
+            String jwt=null;
+            //是否保持登录
+            if(remember){
+                jwt= JwtUtils.generateJwtWithExpire(claims);
+            }
+            else {
+                jwt = JwtUtils.generateJwtWithoutExpire(claims);
+            }
+            return Result.success(jwt);
+        }
     }
 
-    /*修改密码*/
     @PutMapping("/password")
-    public Result changePassword(Long id,String oldPassword,String password){
-        /*修改成功*/
-        int res=iAdminService.changePassword(id,oldPassword,password);
-        if(res==2){
-            return Result.error("修改密码失败,旧密码输入错误");
-        }else if(res==0){
-            return Result.error("修改密码失败,不存在该账户");
+    public Result changePassword(@RequestParam Integer id,@RequestParam String oldPassword,@RequestParam String newPassword){
+        //根据id查找用户
+        Admin a = adminService.queryById(id);
+        //比对密码是否相同
+        if(!a.getPassword().equals(oldPassword)){
+            return Result.error("密码不正确");
+        }else if(oldPassword.equals(newPassword)){
+            return Result.error("新旧密码相同");
         }else{
+            a.setPassword(newPassword);
+            adminService.update(a);
             return Result.success();
         }
     }
 
-    /*根据token查询管理员信息*/
-    @GetMapping("/info")
-    public Result getInfo(HttpServletRequest request){
-        /*获取请求头中的令牌*/
-        String token=request.getHeader("token");
-
-        /*解析出令牌中的id信息*/
-        Claims claims = JwtUtils.parseJWT(token);
-        String id=claims.get("id").toString();
-
-        /*根据id查询个人信息*/
-        Admin a = iAdminService.getInfoById(id);
-        if(a==null){
-            log.info("获取信息失败");
-            return Result.error("获取信息失败");
-        }else{
-            log.info("获取信息成功:{}",a);
-            return Result.success(a);
-        }
+    /**
+     * 条件分页查询
+     * @param name
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    @GetMapping("/admins")
+    public Result query(@RequestParam(required = false) String name,@RequestParam(defaultValue = "1") Integer page,
+                        @RequestParam(defaultValue = "10") Integer pageSize){
+        PageBean pageBean = adminService.list(name, page, pageSize);
+        return Result.success(pageBean);
     }
 
-    /*根据id修改管理员信息*/
-    @PutMapping("/info")
-    public Result updateInfoById(Long id,String name,String telephone){
-        int res=iAdminService.updateInfoById(id,name,telephone);
-        if(res==1) return Result.success();
-        else return Result.error("修改个人信息失败");
+    /**
+     * 根据id查询
+     * @param id
+     * @return
+     */
+    @GetMapping("/admins/{id}")
+    public Result queryById(@PathVariable Integer id){
+        Admin admin = adminService.queryById(id);
+        return Result.success(admin);
+    }
+
+    /**
+     * 删除
+     * @param id
+     * @return
+     */
+    @Log
+    @DeleteMapping("/admins/{id}")
+    public Result deleteById(@PathVariable Integer id){
+        adminService.deleteById(id);
+        log.info("删除管理员: {}",id);
+        return Result.success();
+    }
+
+    /**
+     * 更新
+     * @param admin
+     * @return
+     */
+    @Log
+    @PutMapping("/admins")
+    public Result update(@RequestBody Admin admin){
+        log.info("更新管理员: {}",admin);
+        adminService.update(admin);
+        return Result.success();
+    }
+
+    /**
+     * 修改
+     * @param admin
+     * @return
+     */
+    @Log
+    @PostMapping("/admins")
+    public Result insert(@RequestBody Admin admin){
+        adminService.insert(admin);
+        log.info("新增管理员: {}",admin);
+        return Result.success();
     }
 
 }

@@ -1,90 +1,89 @@
 package com.ncu.quiz_master_backend.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.OrderItem;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ncu.quiz_master_backend.entity.Category;
+import com.ncu.quiz_master_backend.entity.PageBean;
 import com.ncu.quiz_master_backend.entity.Question;
+import com.ncu.quiz_master_backend.mapper.CategoryMapper;
 import com.ncu.quiz_master_backend.mapper.QuestionMapper;
 import com.ncu.quiz_master_backend.service.IQuestionService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ncu.quiz_master_backend.utils.HandleFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
-import java.util.Map;
 
-/**
- * <p>
- *  服务实现类
- * </p>
- *
- * @author max
- * @since 2023-12-04
- */
 @Service
-public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> implements IQuestionService {
+public class QuestionServiceImpl implements IQuestionService {
     @Autowired
     private QuestionMapper questionMapper;
+    @Autowired
+    private CategoryMapper categoryMapper;
 
     @Override
-    public Question selectById(Long id) {
+    public PageBean listAll(Integer page, Integer pageSize, String questionDesc, Integer categoryId, Integer type) {
+        PageHelper.startPage(page,pageSize);
+        List<Question> questionList = questionMapper.selectAll(questionDesc,categoryId,type);
+        Page<Question> p = (Page<Question>) questionList;
+        return new PageBean(p.getTotal(),p.getResult());
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void removeById(List<Integer> ids) {
+        questionMapper.deleteById(ids);
+        //删完题目后更新分类表中对应的题目数量
+        //获取去重的分类ID列表
+        List<Integer> categoryIds = questionMapper.selectDistinctCategoryId();
+        for(Integer i :categoryIds){
+            //获取该分类的题目总数
+            int cnt = questionMapper.selectCountByCategoryId(i);
+            //更新分类表的题目数
+            categoryMapper.updateForQuestionCount(cnt,i);
+        }
+    }
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void addOne(Question question) {
+        questionMapper.insert(question);
+        int id=question.getCategoryId();
+        int cnt = questionMapper.selectCountByCategoryId(id);
+        categoryMapper.updateForQuestionCount(cnt,id);
+    }
+
+    @Override
+    public Question getById(Integer id) {
         return questionMapper.selectById(id);
     }
 
     @Override
-    public Map<String, Object> selectByKeyword(String keyword,Integer typeId,Integer categoryId, Integer pageNo, Integer pageSize) {
-        Page<Question> page=Page.of(pageNo,pageSize);
-        page.addOrder(new OrderItem("question_id",true));
-
-        LambdaQueryWrapper<Question> lambdaQueryWrapper=new LambdaQueryWrapper<>();
-        if(keyword!=null){
-            lambdaQueryWrapper.like(Question::getQuestionContent,keyword);
-        }
-
-        if(typeId!=null){
-            lambdaQueryWrapper.eq(Question::getQuestionType,typeId);
-        }
-        if(categoryId!=null){
-            lambdaQueryWrapper.eq(Question::getQuestionCategory,categoryId);
-        }
-
-        questionMapper.selectPage(page,lambdaQueryWrapper);
-        List<Question> questionList=page.getRecords();
-
-        Map<String,Object> res=new HashMap<>();
-        res.put("list",questionList);
-        res.put("total",page.getTotal());
-        return res;
+    public void modify(Question question) {
+        questionMapper.update(question);
     }
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public Integer deleteByIds(List<Long> ids) {
-        return questionMapper.deleteBatchIds(ids);
-    }
-
-    @Override
-    public Integer editById(Long id, Integer type, Integer category,String content,String answer) {
-        Question q=questionMapper.selectById(id);
-        if(type!=null&&type!=q.getQuestionType()){
-            q.setQuestionType(type);
+    public void upload(MultipartFile file,Integer categoryId) throws IOException {
+        /*
+          TODO 在这里处理接收到的file文件
+         */
+        InputStream inputStream = file.getInputStream();
+        List<Question> questionList=HandleFile.excelReader(inputStream);
+        for(Question question:questionList){
+            //逐项插入
+            question.setCategoryId(categoryId);
+            questionMapper.insert(question);
         }
-        if(category!=null&&category!=q.getQuestionCategory()){
-            q.setQuestionCategory(category);
+        List<Integer> categoryIds = questionMapper.selectDistinctCategoryId();
+        for(Integer i :categoryIds){
+            //获取该分类的题目总数
+            int cnt = questionMapper.selectCountByCategoryId(i);
+            //更新分类表的题目数
+            categoryMapper.updateForQuestionCount(cnt,i);
         }
-        if(content!=null&&!content.equals(q.getQuestionContent())){
-            q.setQuestionContent(content);
-        }
-        if(answer!=null&&!answer.equals(q.getQuestionAnswer())){
-            q.setQuestionAnswer(answer);
-        }
-        return questionMapper.updateById(q);
-    }
-
-    @Override
-    public Integer addOne(Integer type, Integer category, String content, String answer) {
-        Question q= new Question();
-        q.setQuestionType(type).setQuestionCategory(category).setQuestionContent(content).setQuestionAnswer(answer);
-        return questionMapper.insert(q);
     }
 }

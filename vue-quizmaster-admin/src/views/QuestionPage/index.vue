@@ -1,31 +1,30 @@
 <template>
   <div class="question-page">
-    <div class="upload-button">
+    <div class="import-button">
       <el-button type="primary"
-        >上传<i class="el-icon-upload el-icon--right"></i
+      >导入<i class="el-icon-upload el-icon--right" @click="importDialogVisible=true"></i
       ></el-button>
     </div>
 
     <div class="search-bar">
       <el-input
-        placeholder="按关键字搜索"
-        v-model="keyword"
-        style="width: 600px"
-        clearable
+          placeholder="按题目描述搜索"
+          v-model="keyword"
+          style="width: 600px"
+          clearable
       >
       </el-input>
-      <el-button type="primary" icon="el-icon-search" @click="selectByKeyword()">搜搜看</el-button>
+      <el-button type="primary" icon="el-icon-search" @click="pageQuestionSearch()">搜索</el-button>
     </div>
 
     <!-- 条件筛选器 -->
     <div class="type-selector">
       <el-select v-model="selectedType" placeholder="按题型筛选" clearable @change="handleTypeChange">
         <el-option
-          v-for="item in typeOptions"
-          :key="item.typeId"
-          :label="item.typeName"
-          :value="item.typeId"
-          
+            v-for="item in typeOptions"
+            :key="item.typeId"
+            :label="item.typeName"
+            :value="item.typeId"
         >
         </el-option>
       </el-select>
@@ -33,16 +32,16 @@
 
     <div class="category-selector">
       <el-select
-        v-model="selectedCategory"
-        placeholder="按题目分类筛选"
-        clearable
-        @change="handleCategoryChange"
+          v-model="selectedCategoryId"
+          placeholder="按分类筛选"
+          clearable
+          @change="handleCategoryChange"
       >
         <el-option
-          v-for="item in categoryOptions"
-          :key="item.categoryId"
-          :label="item.categoryName"
-          :value="item.categoryId"
+            v-for="item in categoryOptions"
+            :key="item.categoryId"
+            :label="item.categoryName"
+            :value="item.categoryId"
         >
         </el-option>
       </el-select>
@@ -50,70 +49,64 @@
 
     <div class="add-button">
       <el-button type="primary" @click="addDialogVisible=true"
-        >新增<i class="el-icon-plus el-icon--right"></i
+      >新增<i class="el-icon-plus el-icon--right"></i
       ></el-button>
     </div>
 
     <el-table
-      ref="multipleTable"
-      :data="tableData"
-      tooltip-effect="dark"
-      style="width: 100%"
-      :default-sort="{ prop: 'questionId', order: 'ascending' }"
-      @selection-change="handleSelectionChange"
+        ref="multipleTable"
+        :data="questionData"
+        tooltip-effect="dark"
+        style="width: 100%"
+        stripe
+        @selection-change="handleSelectionChange"
     >
+      <el-table-column type="selection" width="55"></el-table-column>
+      <el-table-column prop="questionId" label="题目编号">
+      </el-table-column>
+      <el-table-column prop="typeId" label="题型" :formatter="formatType">
+      </el-table-column>
+      <el-table-column prop="categoryId" label="分类" :formatter="formatCategory">
+      </el-table-column>
+      <el-table-column prop="questionDesc" label="题目描述">
+      </el-table-column>
+
       <el-table-column type="expand">
         <template slot-scope="props">
           <el-form label-position="left" inline class="demo-table-expand">
-            <el-form-item label="题目答案">
-              <span>{{ props.row.questionAnswer }}</span>
+            <el-form-item label="A选项">
+              <span>{{ props.row.optionA }}</span>
             </el-form-item>
-            <el-form-item label="创建时间">
-              <span>{{ props.row.createTime }}</span>
+            <el-form-item label="B选项">
+              <span>{{ props.row.optionB }}</span>
             </el-form-item>
-            <el-form-item label="更新时间">
-              <span>{{ props.row.updateTime }}</span>
+            <el-form-item label="C选项">
+              <span>{{ props.row.optionC }}</span>
+            </el-form-item>
+            <el-form-item label="D选项">
+              <span>{{ props.row.optionD }}</span>
+            </el-form-item>
+            <el-form-item label="答案">
+              <span>{{ props.row.answer }}</span>
             </el-form-item>
           </el-form>
         </template>
       </el-table-column>
 
-      <el-table-column type="selection" width="55"> </el-table-column>
-      <el-table-column prop="questionId" label="题目编号" sortable width="120">
-        <template slot-scope="scope">{{ scope.row.questionId }}</template>
-      </el-table-column>
-      <el-table-column prop="questionCategory" label="题目分类" width="120" :formatter="formatCategoryType">
-      </el-table-column>
-      <el-table-column prop="questionType" label="题型" width="120" :formatter="formatQuestionType">
-      </el-table-column>
-      <el-table-column prop="questionContent" label="题目内容">
-      </el-table-column>
-      <el-table-column
-        prop="starCount"
-        label="收藏次数"
-        sortable
-        show-overflow-tooltip
-      >
-      </el-table-column>
-      <el-table-column
-        prop="wrongCount"
-        label="错误次数"
-        sortable=""
-        show-overflow-tooltip
-      >
-      </el-table-column>
       <el-table-column label="操作" width="120">
-          <template slot-scope="scope">
-            <el-button size="small" @click="selectById(scope.row)"
-              >编辑</el-button
-            >
-          </template>
+        <template slot-scope="scope">
+          <el-button size="small" @click="selectById(scope.row)"
+          >编辑
+          </el-button
+          >
+        </template>
       </el-table-column>
     </el-table>
 
     <div style="margin-top: 20px; float: left">
       <el-button type="danger" @click="deleteDialogVisible = true"
-        >删除</el-button
+      >删除
+      </el-button
       >
       <el-button @click="toggleSelection()">取消选择</el-button>
     </div>
@@ -124,93 +117,160 @@
       <span slot="footer" class="dialog-footer">
         <el-button @click="deleteDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click=" () => { deleteDialogVisible = false; deleteByIds(); }"
-          >确 定</el-button
+        >确 定</el-button
         >
       </span>
+    </el-dialog>
+
+    <!-- 导入题目对话框 -->
+    <el-dialog title="导入题目" :visible.sync="importDialogVisible" width="30%">
+
+      <el-form
+          :model="importForm"
+          ref="importForm">
+        <el-form-item label="分类" prop="category">
+          <el-select placeholder="请选择分类" v-model="importForm.categoryId" clearable>
+            <el-option v-for="item in categoryOptions" :key="item.categoryId" :label="item.categoryName"
+                       :value="item.categoryId"></el-option>
+          </el-select>
+
+          <el-form-item label="上传文件" style="margin-top: 10px">
+            <el-upload
+                class="upload-demo"
+                ref="upload"
+                action="http://localhost:8080/admin/questions/upload"
+                :headers="uploadHeader"
+                :auto-upload="false"
+                :before-upload="beforeUpload"
+                :on-success="handleSuccess"
+                :on-error="handleError"
+                :data="importForm"
+                :limit="1"
+                :multiple="false"
+                :file-list="fileList"
+                accept=".xlsx,.xls">
+              <el-button slot="trigger"  type="primary">选取文件</el-button>
+              <el-button style="margin-left: 10px;"  type="success" @click="submitUpload">上传到服务器</el-button>
+              <div slot="tip" class="el-upload__tip">只能上传xlsx/xls文件，且不超过10mb</div>
+            </el-upload>
+          </el-form-item>
+        </el-form-item>
+
+
+      </el-form>
     </el-dialog>
 
     <!-- 编辑题目对话框 -->
     <el-dialog title="编辑题目" :visible.sync="editDialogVisible" width="30%">
-      
+
       <el-form
-      :model="editForm"
-      ref="editForm">
-        <el-form-item label="题目编号" prop="id">
-                <el-input v-model="editForm.id" disabled></el-input>
-              </el-form-item>
-              <el-form-item label="题型" prop="type">
-                <el-select placeholder="请选择题型" v-model="editForm.type">
-                  <el-option v-for="item in typeOptions" :key="item.typeId" :label="item.typeName" :value="item.typeId"></el-option>
-                </el-select>
-              </el-form-item>
+          :model="updateForm"
+          ref="updateForm">
+        <el-form-item label="题目编号" prop="questionId">
+          <el-input v-model="updateForm.questionId" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="题型" prop="type">
+          <el-select placeholder="请选择题型" v-model="updateForm.type">
+            <el-option v-for="item in typeOptions" :key="item.typeId" :label="item.typeName"
+                       :value="item.typeId"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="分类" prop="category">
+          <el-select placeholder="请选择分类" v-model="updateForm.categoryId">
+            <el-option v-for="item in categoryOptions" :key="item.categoryId" :label="item.categoryName"
+                       :value="item.categoryId"></el-option>
+          </el-select>
+        </el-form-item>
 
-              <el-form-item label="题目分类" prop="category">
-                <el-select placeholder="请选择题目分类" v-model="editForm.category">
-                  <el-option v-for="item in categoryOptions" :key="item.categoryId" :label="item.categoryName" :value="item.categoryId"></el-option>
-                </el-select>
-              </el-form-item>
+        <el-form-item label="题目描述" prop="questionDesc">
+          <el-input v-model="updateForm.questionDesc" type="textarea"></el-input>
+        </el-form-item>
 
-              <el-form-item label="题目内容" prop="content">
-                <el-input v-model="editForm.content" type="textarea"></el-input>
-              </el-form-item>
+        <el-form-item label="A选项" prop="optionA">
+          <el-input v-model="updateForm.optionA" type="textarea"></el-input>
+        </el-form-item>
 
-              <el-form-item label="题目答案" prop="answer">
-                <el-input v-model="editForm.answer" type="textarea"></el-input>
-              </el-form-item>
+        <el-form-item label="B选项" prop="optionB">
+          <el-input v-model="updateForm.optionB" type="textarea"></el-input>
+        </el-form-item>
+        <el-form-item label="C选项" prop="optionC">
+          <el-input v-model="updateForm.optionC" type="textarea"></el-input>
+        </el-form-item>
+        <el-form-item label="D选项" prop="optionD">
+          <el-input v-model="updateForm.optionD" type="textarea"></el-input>
+        </el-form-item>
+        <el-form-item label="答案" prop="answer">
+          <el-input v-model="updateForm.answer"></el-input>
+        </el-form-item>
       </el-form>
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="editDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click=" () => {editDialogVisible = false;editById(); }"
-          >保存</el-button
+        <el-button type="primary" @click=" () => {editDialogVisible = false;updateQuestion(); }"
+        >保存</el-button
         >
       </span>
     </el-dialog>
 
-     <!-- 新增题目对话框 -->
-     <el-dialog title="新增题目" :visible.sync="addDialogVisible" width="30%">
-      
+    <!-- 新增题目对话框 -->
+    <el-dialog title="新增题目" :visible.sync="addDialogVisible" width="30%">
+
       <el-form
-      :model="addForm"
-      ref="addForm">
-              <el-form-item label="题型" prop="type">
-                <el-select placeholder="请选择题型" v-model="addForm.type">
-                  <el-option v-for="item in typeOptions" :key="item.typeId" :label="item.typeName" :value="item.typeId"></el-option>
-                </el-select>
-              </el-form-item>
+          :model="addForm"
+          ref="addForm">
+        <el-form-item label="题型" prop="type">
+          <el-select placeholder="请选择题型" v-model="addForm.type">
+            <el-option v-for="item in typeOptions" :key="item.typeId" :label="item.typeName"
+                       :value="item.typeId"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="分类" prop="category">
+          <el-select placeholder="请选择分类" v-model="addForm.categoryId">
+            <el-option v-for="item in categoryOptions" :key="item.categoryId" :label="item.categoryName"
+                       :value="item.categoryId"></el-option>
+          </el-select>
+        </el-form-item>
 
-              <el-form-item label="题目分类" prop="category">
-                <el-select placeholder="请选择题目分类" v-model="addForm.category">
-                  <el-option v-for="item in categoryOptions" :key="item.categoryId" :label="item.categoryName" :value="item.categoryId"></el-option>
-                </el-select>
-              </el-form-item>
+        <el-form-item label="题目描述" prop="questionDesc">
+          <el-input v-model="addForm.questionDesc" type="textarea"></el-input>
+        </el-form-item>
 
-              <el-form-item label="题目内容" prop="content">
-                <el-input v-model="addForm.content" type="textarea"></el-input>
-              </el-form-item>
 
-              <el-form-item label="题目答案" prop="answer">
-                <el-input v-model="addForm.answer" type="textarea"></el-input>
-              </el-form-item>
+        <el-form-item label="A选项" prop="optionA">
+          <el-input v-model="addForm.optionA" type="textarea"></el-input>
+        </el-form-item>
+
+        <el-form-item label="B选项" prop="optionB">
+          <el-input v-model="addForm.optionB" type="textarea"></el-input>
+        </el-form-item>
+        <el-form-item label="C选项" prop="optionC">
+          <el-input v-model="addForm.optionC" type="textarea"></el-input>
+        </el-form-item>
+        <el-form-item label="D选项" prop="optionD">
+          <el-input v-model="addForm.optionD" type="textarea"></el-input>
+        </el-form-item>
+        <el-form-item label="答案" prop="answer">
+          <el-input v-model="addForm.answer"></el-input>
+        </el-form-item>
       </el-form>
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="addDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click=" () => {addDialogVisible = false;addOne(); }"
-          >保存</el-button
+        <el-button type="primary" @click=" () => {addDialogVisible = false;addQuestion(); }"
+        >保存</el-button
         >
       </span>
     </el-dialog>
 
     <div class="pagination">
       <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-        :current-page="pageNo"
-        :page-sizes="[5, 10, 15, 20]"
-        :page-size="pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="pageNo"
+          :page-sizes="[5, 10, 15, 20]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total"
       >
       </el-pagination>
     </div>
@@ -219,50 +279,109 @@
 
 <script>
 import axios from "@/api/axios";
+
 export default {
   data() {
     return {
-      /*表格数据*/ 
-      tableData: [],
-
+      //上传文件请求头
+      uploadHeader:{
+        token: localStorage.getItem("token")
+      },
+      //上传文件列表
+      fileList: [],
+      /*表格数据*/
+      questionData: [],
+      //关键词
+      keyword: "",
+      /*导入表单*/
+      importForm:{
+        categoryId:""
+      },
       /* 编辑表单 */
-      editForm:{
-        id:"",
-        type:"",
-        category:"",
-        content:"",
-        answer:"",
+      updateForm: {
+        questionId: "",
+        questionDesc: "",
+        type: "",
+        categoryId: "",
+        optionA: "",
+        optionB: "",
+        optionC: "",
+        optionD: "",
+        answer: ""
       },
       /* 新增表单 */
-      addForm:{
-        type:"",
-        category:"",
-        content:"",
-        answer:"",
+      addForm: {
+        questionDesc: "",
+        type: "",
+        categoryId: "",
+        optionA: "",
+        optionB: "",
+        optionC: "",
+        optionD: "",
+        answer: ""
       },
       multipleSelection: [],
       /* 题型和题目分类选项 */
-      typeOptions: [],
+      typeOptions: [
+        { typeId: 1, typeName: "单选" },
+        { typeId: 2, typeName: "多选" },
+        { typeId: 3, typeName: "判断" }
+      ],
       categoryOptions: [],
       /* 当前选中的题型和题目分类 */
       selectedType: "",
-      selectedCategory: "",
+      selectedCategoryId: "",
+      /*导入对话框的可视性*/
+      importDialogVisible:false,
       /* 确认删除对话框的可视性 */
       deleteDialogVisible: false,
       /* 编辑对话框的可视性 */
-      editDialogVisible:false,
+      editDialogVisible: false,
       /* 添加对话框的可视性 */
-      addDialogVisible:false,
+      addDialogVisible: false,
       /* 当前页码和页面尺寸及页数(已设置默认值) */
-      pageNo:1,
-      pageSize:5,
-      total:20,
-      /* 关键字 */
-      keyword:'',
+      pageNo: 1,
+      pageSize: 5,
+      total: 20,
     };
   },
 
   methods: {
+    beforeUpload(file) {
+      const isExcel = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || file.type === 'application/vnd.ms-excel';
+      const isLt10M = file.size / 1024 / 1024 < 10;
+
+      if (!isExcel) {
+        this.$message.error('上传文件格式必须为 XLSX 或 XLS!');
+        return false;
+      }
+      if (!isLt10M) {
+        this.$message.error('上传文件大小不能超过 10MB!');
+        return false;
+      }
+      return true;
+    },
+    handleSuccess(res, file, fileList) {
+      if (res.code==1) {
+        console.log(file)
+        console.log(fileList)
+        this.$message.success('文件上传成功');
+        this.importDialogVisible = false;
+        this.pageQuestionSelect();
+      } else {
+        this.$message.error('文件上传失败');
+      }
+    },
+    handleError(err, file, fileList) {
+      console.log(file)
+      console.log(fileList)
+      this.$message.error('文件上传失败');
+    },
+
+    submitUpload() {
+      this.$refs.upload.submit();
+    },
+
     toggleSelection(rows) {
       if (rows) {
         rows.forEach((row) => {
@@ -275,174 +394,141 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
-
-    getQuestionType() {
+    //获取前50个分类
+    getCategory() {
       axios
-        .get("/type")
-        .then((res) => {
-          if (res.data.code == 1) {
-            this.typeOptions = res.data.data;
-          } else {
-            this.$message.error(res.data.msg);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+          .get("/admin/categories?page="+1+"&pageSize="+50)
+          .then((res) => {
+            if (res.data.code == 1) {
+              this.categoryOptions = res.data.data.rows;
+            } else {
+              this.$message.error(res.data.msg);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
     },
-
-    getQuestionCategory() {
-      axios
-        .get("/category")
-        .then((res) => {
-          if (res.data.code == 1) {
-            this.categoryOptions = res.data.data;
-          } else {
-            this.$message.error(res.data.msg);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    selectById(row) {
+      this.editDialogVisible = true
+      axios.get("/admin/questions/" + row.questionId).then((res) => {
+        if (res.data.code == 1) {
+          this.updateForm.questionId = res.data.data.questionId;
+          this.updateForm.questionDesc = res.data.data.questionDesc;
+          this.updateForm.optionA = res.data.data.optionA;
+          this.updateForm.optionB = res.data.data.optionB;
+          this.updateForm.optionC = res.data.data.optionC;
+          this.updateForm.optionD = res.data.data.optionD;
+          this.updateForm.answer = res.data.data.answer;
+          this.updateForm.type = res.data.data.type;
+          this.updateForm.categoryId = res.data.data.categoryId;
+        } else {
+          this.$message.error(res.data.msg);
+        }
+      })
+          .catch((err) => {
+            console.log(err);
+          });
     },
-    selectById(row){
-      this.editDialogVisible=true
-      console.log(row.questionId)
-      axios.get("/question?id="+row.questionId).then((res) => {
-          if (res.data.code == 1) {
-            this.editForm.id = res.data.data.questionId;
-            this.editForm.type=res.data.data.questionType;
-            this.editForm.category=res.data.data.questionCategory;
-            this.editForm.content=res.data.data.questionContent;
-            this.editForm.answer=res.data.data.questionAnswer;
-            
-          } else {
-            this.$message.error(res.data.msg);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-    /* 根据id修改 */
-    editById(){
-      console.log(this.editForm.id)
-      axios.put("/question?id="+this.editForm.id+"&type="+this.editForm.type
-      +"&category="+this.editForm.category+"&content="+this.editForm.content
-      +"&answer="+this.editForm.answer).then((res) => {
-          if (res.data.code == 1) {
-            this.$message.success('修改成功');
-            this.pageSelect();
-          } else {
-            this.$message.error(res.data.msg);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    /* 修改题目 */
+    updateQuestion() {
+      axios.put("/admin/questions",this.updateForm).then((res) => {
+        if (res.data.code == 1) {
+          this.$message.success('修改成功');
+          this.pageQuestionSelect();
+        } else {
+          this.$message.error(res.data.msg);
+        }
+      })
+          .catch((err) => {
+            console.log(err);
+          });
     },
     /* 分页器改变 */
     handleSizeChange(val) {
-      this.pageSize=val
-      this.pageSelect();
+      this.pageSize = val
+      this.pageQuestionSelect();
       console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
-      this.pageNo=val
-      this.pageSelect();
+      this.pageNo = val
+      this.pageQuestionSelect();
       console.log(`当前页: ${val}`);
     },
-    pageSelect(){
-      axios.get("/question/"+this.pageNo+"/"+this.pageSize).then((res) => {
-          if (res.data.code == 1) {
-            this.tableData = res.data.data.list;
-            this.total=res.data.data.total
-          } else {
-            this.$message.error(res.data.msg);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    pageQuestionSelect() {
+      axios.get("/admin/questions?page=" + this.pageNo + "&pageSize=" + this.pageSize
+          +"&questionDesc="+this.keyword+"&categoryId="+this.selectedCategoryId+"&type="+this.selectedType).then((res) => {
+        if (res.data.code == 1) {
+          this.questionData = res.data.data.rows;
+          this.total = res.data.data.total
+        } else {
+          this.$message.error(res.data.msg);
+        }
+      })
+          .catch((err) => {
+            console.log(err);
+          });
     },
 
     /* 根据关键字检索 */
-    selectByKeyword(){
-      axios.get("/question/search",{
-        params: {
-          keyword: this.keyword,
-          pageNo: this.pageNo,
-          pageSize: this.pageSize,
-          typeId:this.selectedType,
-          categoryId:this.selectedCategory
-        },
-      }).then((res) => {
-          if (res.data.code == 1) {
-            this.tableData = res.data.data.list;
-            this.total=res.data.data.total
-          } else {
-            this.$message.error(res.data.msg);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    pageQuestionSearch() {
+      this.pageNo = 1
+      this.pageQuestionSelect()
     },
-    handleTypeChange(){
-      this.selectByKeyword()
+    handleTypeChange() {
+      this.pageQuestionSearch()
     },
-    handleCategoryChange(){
-      this.selectByKeyword()
+    handleCategoryChange() {
+      this.pageQuestionSearch()
     },
 
     // 根据题型的数字返回对应的名字
-  formatQuestionType(row) {
-    const typeId = row.questionType;
-    const type = this.typeOptions.find(option => option.typeId === typeId);
-    return type ? type.typeName : ''; // 返回题型名字或空字符串
-  },
+    formatType(row) {
+      const typeId = row.type;
+      const type = this.typeOptions.find(option => option.typeId === typeId);
+      return type ? type.typeName : ''; // 返回题型名字或空字符串
+    },
 
-  // 根据题目分类的数字返回对应的名字
-  formatCategoryType(row) {
-    const categoryId = row.questionCategory;
-    const category = this.categoryOptions.find(option => option.categoryId === categoryId);
-    return category ? category.categoryName : ''; // 返回题型名字或空字符串
-  },
-  
-  /* 根据id集合删除题目 */
-  deleteByIds(){
-    var questionIds = this.multipleSelection.map(item => item.questionId);
-    axios.delete("/question/"+questionIds.join(',')).then((res) => {
-          if (res.data.code == 1) {
-            this.$message.success('删除成功');
-            this.pageSelect();
-          } else {
-            this.$message.error(res.data.msg);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-  },
-  addOne(){
-      axios.post("/question?type="+this.addForm.type+"&category="+this.addForm.category
-      +"&content="+this.addForm.content+"&answer="+this.addForm.answer).then((res) => {
-          if (res.data.code == 1) {
-            this.$message.success('新增成功');
-            this.pageSelect();
-          } else {
-            this.$message.error(res.data.msg);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-  },
+    // 根据分类的数字返回对应的名字
+    formatCategory(row) {
+      const categoryId = row.categoryId;
+      const category = this.categoryOptions.find(option => option.categoryId === categoryId);
+      return category ? category.categoryName : ''; // 返回分类名字或空字符串
+    },
+
+    /* 根据id集合删除题目 */
+    deleteByIds() {
+      var questionIds = this.multipleSelection.map(item => item.questionId);
+      axios.delete("/admin/questions/" + questionIds.join(',')).then((res) => {
+        if (res.data.code == 1) {
+          this.$message.success('删除成功');
+          this.pageQuestionSelect();
+        } else {
+          this.$message.error(res.data.msg);
+        }
+      })
+          .catch((err) => {
+            console.log(err);
+          });
+    },
+    //新增题目
+    addQuestion() {
+      axios.post("/admin/questions",this.addForm).then((res) => {
+        if (res.data.code == 1) {
+          this.$message.success('添加成功');
+          this.pageQuestionSelect();
+        } else {
+          this.$message.error(res.data.msg);
+        }
+      })
+          .catch((err) => {
+            console.log(err);
+          });
+    },
   },
   mounted() {
-    this.getQuestionType();
-    this.getQuestionCategory();
-    this.pageSelect();
+    this.getCategory();
+    this.pageQuestionSelect();
   },
 };
 </script>
@@ -451,31 +537,38 @@ export default {
 .question-page {
   padding: 20px;
 }
+
 .demo-table-expand {
   font-size: 0;
 }
+
 .demo-table-expand label {
   width: 90px;
   color: #99a9bf;
 }
+
 .demo-table-expand .el-form-item {
   margin-right: 0;
   margin-bottom: 0;
   width: 50%;
 }
-.upload-button {
+
+.import-button {
   margin-bottom: 20px;
   float: left;
 }
+
 .add-button {
   margin-top: 20px;
   margin-bottom: 20px;
   float: right;
 }
+
 .pagination {
   margin: 150px;
-  
+
 }
+
 .type-selector {
   margin-top: 20px;
   margin-bottom: 20px;
@@ -483,6 +576,7 @@ export default {
   position: relative;
   right: 90px;
 }
+
 .category-selector {
   margin-top: 20px;
   margin-bottom: 20px;

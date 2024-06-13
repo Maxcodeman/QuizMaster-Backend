@@ -32,13 +32,6 @@ const routes = [
           title:"分类管理"
         }
       },{
-        path:"typePage",
-        component:() => import("@/views/TypePage"),
-        name:"type",
-        meta:{
-          title:"题型管理"
-        }
-      },{
         path:"notePage",
         component:() => import("@/views/NotePage"),
         name:"note",
@@ -79,6 +72,36 @@ const routes = [
         name:"change-password",
         meta:{
           title:"修改密码"
+        }
+      },{
+        path:"adminPage",
+        component:() => import("@/views/AdminPage"),
+        name:"admin",
+        meta:{
+          title:"管理员管理"
+        }
+      },{
+        path:"messagePage",
+        component:() => import("@/views/MessagePage"),
+        name:"message",
+        meta:{
+          title:"资讯管理"
+        }
+      },
+      {
+        path:"favoritePage",
+        component:() => import("@/views/FavoritePage"),
+        name:"favorite",
+        meta:{
+          title:"收藏夹管理"
+        }
+      },
+      {
+        path:"wrongPage",
+        component:() => import("@/views/WrongPage"),
+        name:"wrong",
+        meta:{
+          title:"错题本管理"
         }
       },
     ]

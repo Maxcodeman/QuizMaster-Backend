@@ -1,16 +1,21 @@
 package com.ncu.quiz_master_backend.service;
 
 import com.ncu.quiz_master_backend.entity.Comment;
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.ncu.quiz_master_backend.entity.PageBean;
 
-/**
- * <p>
- *  服务类
- * </p>
- *
- * @author max
- * @since 2023-12-04
- */
-public interface ICommentService extends IService<Comment> {
+import java.time.LocalDateTime;
+
+public interface ICommentService {
+    PageBean selectCommentByConditions(Integer commentId,
+                                       Integer userId,
+                                       Integer questionId,
+                                       LocalDateTime startTime,
+                                       LocalDateTime endTime,
+                                       Integer page,
+                                       Integer pageSize);
+
+    void deleteById(Integer id);
+
+    Comment selectById(Integer id);
 
 }
