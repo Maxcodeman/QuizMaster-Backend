@@ -1,5 +1,6 @@
 package com.ncu.quiz_master_backend.controller.admin;
 
+import com.ncu.quiz_master_backend.anno.Log;
 import com.ncu.quiz_master_backend.entity.Admin;
 import com.ncu.quiz_master_backend.entity.PageBean;
 import com.ncu.quiz_master_backend.entity.Result;
@@ -106,6 +107,7 @@ public class AdminController {
      * @param id
      * @return
      */
+    @Log
     @DeleteMapping("/admins/{id}")
     public Result deleteById(@PathVariable Integer id){
         adminService.deleteById(id);
@@ -118,6 +120,7 @@ public class AdminController {
      * @param admin
      * @return
      */
+    @Log
     @PutMapping("/admins")
     public Result update(@RequestBody Admin admin){
         log.info("更新管理员: {}",admin);
@@ -130,6 +133,7 @@ public class AdminController {
      * @param admin
      * @return
      */
+    @Log
     @PostMapping("/admins")
     public Result insert(@RequestBody Admin admin){
         adminService.insert(admin);

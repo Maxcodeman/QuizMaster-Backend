@@ -1,6 +1,7 @@
 package com.ncu.quiz_master_backend.controller.admin;
 
 
+import com.ncu.quiz_master_backend.anno.Log;
 import com.ncu.quiz_master_backend.entity.Message;
 import com.ncu.quiz_master_backend.entity.PageBean;
 import com.ncu.quiz_master_backend.entity.Result;
@@ -29,6 +30,7 @@ public class MessageController {
         return Result.success(pageBean);
     }
 
+    @Log
     @DeleteMapping("/{MessageId}")
     public Result deleteById(@PathVariable Integer MessageId){
         log.info("delete:{}", MessageId);
@@ -36,6 +38,7 @@ public class MessageController {
         return Result.success();
     }
 
+    @Log
     @PostMapping
     public Result insertMessage(@RequestBody Message message){
         log.info("newlog:{}, by {}",message.getAdminId(), message.getMessageContent());
@@ -50,6 +53,7 @@ public class MessageController {
         return Result.success(message);
     }
 
+    @Log
     @PutMapping
     public Result updateMessage(@RequestBody Message message){
         log.info("change message: id= {}, messagecontent={},view={}",

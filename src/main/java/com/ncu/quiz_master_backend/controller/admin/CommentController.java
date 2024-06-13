@@ -1,6 +1,7 @@
 package com.ncu.quiz_master_backend.controller.admin;
 
 
+import com.ncu.quiz_master_backend.anno.Log;
 import com.ncu.quiz_master_backend.entity.Comment;
 import com.ncu.quiz_master_backend.entity.PageBean;
 import com.ncu.quiz_master_backend.entity.Result;
@@ -32,6 +33,7 @@ public class CommentController {
         return Result.success(pageBean);
     }
 
+    @Log
     @DeleteMapping("/{id}")
     public Result deleteById(@PathVariable Integer id){
         log.info("delete id={}",id);

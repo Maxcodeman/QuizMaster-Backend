@@ -1,5 +1,6 @@
 package com.ncu.quiz_master_backend.controller.admin;
 
+import com.ncu.quiz_master_backend.anno.Log;
 import com.ncu.quiz_master_backend.entity.Note;
 import com.ncu.quiz_master_backend.entity.PageBean;
 import com.ncu.quiz_master_backend.entity.Result;
@@ -27,6 +28,7 @@ public class NoteController {
         return Result.success(pageBean);
     }
 
+    @Log
     @DeleteMapping("/{noteId}")
     public Result deleteById(@PathVariable Integer noteId){
         log.info("delete:{}",noteId);
@@ -34,6 +36,7 @@ public class NoteController {
         return Result.success();
     }
 
+    @Log
     @PostMapping
     public Result insertNote(@RequestBody Note note){
         log.info("newNote:{},with userId set {}, questionId = {}",note.getNoteContent(),note.getUserId(),note.getQuestionId());
@@ -48,6 +51,7 @@ public class NoteController {
         return Result.success(note);
     }
 
+    @Log
     @PutMapping
     public Result updateNote(@RequestBody Note note){
         log.info("update noteid={}, userId={}, questionId={}, note content={}",

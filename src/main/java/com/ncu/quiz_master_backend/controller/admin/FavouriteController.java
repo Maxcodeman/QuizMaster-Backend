@@ -1,5 +1,6 @@
 package com.ncu.quiz_master_backend.controller.admin;
 
+import com.ncu.quiz_master_backend.anno.Log;
 import com.ncu.quiz_master_backend.entity.PageBean;
 import com.ncu.quiz_master_backend.entity.Result;
 import com.ncu.quiz_master_backend.service.FavouriteService;
@@ -23,6 +24,8 @@ public class FavouriteController {
         PageBean pageBean = favouriteService.listAll(page,pageSize,userId,questionId);
         return Result.success(pageBean);
     }
+
+    @Log
     @DeleteMapping("/{id}")
     public Result removeById(@PathVariable Integer id){
         favouriteService.removeById(id);

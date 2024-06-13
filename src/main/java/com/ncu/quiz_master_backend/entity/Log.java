@@ -18,8 +18,14 @@ public class Log{
 
     private Integer adminId;
 
-    private String logContent;
-
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
+
+    private String className;//操作类名
+
+    private String methodName;//操作方法名
+
+    private String methodParams;//操作方法参数
+
+    private String returnValue;//操作方法返回值
 }

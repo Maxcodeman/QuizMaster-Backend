@@ -2,7 +2,7 @@
   <div>
     <div>
       <div class="sidebar-title">
-        <img src="../../assets/logo.png" width="30px" height="30px">
+        <img src="../../assets/app_icon.png" width="30px" height="30px">
         <span>刷题宝后台管理系统</span>
       </div>
       <el-menu

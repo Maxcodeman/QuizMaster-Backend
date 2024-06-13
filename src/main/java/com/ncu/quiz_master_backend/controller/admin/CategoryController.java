@@ -1,6 +1,7 @@
 package com.ncu.quiz_master_backend.controller.admin;
 
 
+import com.ncu.quiz_master_backend.anno.Log;
 import com.ncu.quiz_master_backend.entity.Category;
 import com.ncu.quiz_master_backend.entity.PageBean;
 import com.ncu.quiz_master_backend.entity.Question;
@@ -28,23 +29,28 @@ public class CategoryController {
         return Result.success(pageBean);
     }
 
+    @Log
     @DeleteMapping("/{id}")
     public Result removeById(@PathVariable Integer id){
         iCategoryService.removeById(id);
         return Result.success();
     }
 
+    @Log
     @PostMapping
     public Result addOne(@RequestParam String categoryName){
         log.info("addOne接收到的:"+categoryName);
         iCategoryService.addOne(categoryName);
         return Result.success();
     }
+
     @GetMapping("/{id}")
     public Result getById(@PathVariable Integer id){
         Category category=iCategoryService.getById(id);
         return Result.success(category);
     }
+
+    @Log
     @PutMapping
     public Result modify(@RequestBody Category category){
         iCategoryService.modify(category);

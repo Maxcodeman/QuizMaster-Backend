@@ -1,6 +1,7 @@
 package com.ncu.quiz_master_backend.controller.admin;
 
 
+import com.ncu.quiz_master_backend.anno.Log;
 import com.ncu.quiz_master_backend.entity.PageBean;
 import com.ncu.quiz_master_backend.entity.Question;
 import com.ncu.quiz_master_backend.entity.Result;
@@ -27,12 +28,14 @@ public class UserController {
         return Result.success(pageBean);
     }
 
+    @Log
     @DeleteMapping("/{ids}")
     public Result removeById(@PathVariable List<Integer> ids){
         userService.removeById(ids);
         return Result.success();
     }
 
+    @Log
     @PostMapping
     public Result addOne(@RequestBody User user){
         userService.addOne(user);
@@ -44,12 +47,15 @@ public class UserController {
         User user=userService.getById(id);
         return Result.success(user);
     }
+
+    @Log
     @PutMapping
     public Result modify(@RequestBody User user){
         userService.modify(user);
         return Result.success();
     }
 
+    @Log
     @PutMapping("/activate")
     public Result changeState(@RequestBody User user){
         userService.changeState(user);

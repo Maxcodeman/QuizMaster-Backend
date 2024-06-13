@@ -364,6 +364,11 @@ export default {
         if (res.data.code == 1) {
           this.$message.success('修改成功');
           this.pageUserSelect();
+          this.updateForm.userId=""
+          this.updateForm.username=""
+          this.updateForm.password=""
+          this.updateForm.avatar=""
+          this.updateForm.mobile=""
         } else {
           this.$message.error(res.data.msg);
         }

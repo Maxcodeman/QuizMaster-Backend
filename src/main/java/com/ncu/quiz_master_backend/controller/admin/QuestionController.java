@@ -1,6 +1,7 @@
 package com.ncu.quiz_master_backend.controller.admin;
 
 
+import com.ncu.quiz_master_backend.anno.Log;
 import com.ncu.quiz_master_backend.entity.PageBean;
 import com.ncu.quiz_master_backend.entity.Question;
 import com.ncu.quiz_master_backend.entity.Result;
@@ -29,12 +30,14 @@ public class QuestionController {
         return Result.success(pageBean);
     }
 
+    @Log
     @DeleteMapping("/{ids}")
     public Result removeById(@PathVariable List<Integer> ids){
         iQuestionService.removeById(ids);
         return Result.success();
     }
 
+    @Log
     @PostMapping
     public Result addOne(@RequestBody Question question){
         iQuestionService.addOne(question);
@@ -46,12 +49,15 @@ public class QuestionController {
         Question question=iQuestionService.getById(id);
         return Result.success(question);
     }
+
+    @Log
     @PutMapping
     public Result modify(@RequestBody Question question){
         iQuestionService.modify(question);
         return Result.success();
     }
 
+    @Log
     @PostMapping("/upload")
     public Result upload(MultipartFile file, Integer categoryId) throws IOException {
         iQuestionService.upload(file,categoryId);

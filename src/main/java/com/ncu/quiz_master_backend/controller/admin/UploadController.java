@@ -1,5 +1,6 @@
 package com.ncu.quiz_master_backend.controller.admin;
 
+import com.ncu.quiz_master_backend.anno.Log;
 import com.ncu.quiz_master_backend.entity.Result;
 import com.ncu.quiz_master_backend.utils.AliOSSUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,8 @@ import java.io.IOException;
 public class UploadController {
     @Autowired
     AliOSSUtils aliOSSUtils;
+
+    @Log
     @PostMapping
     public Result upload(MultipartFile image) throws IOException {
 

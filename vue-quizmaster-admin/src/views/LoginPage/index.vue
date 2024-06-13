@@ -93,7 +93,7 @@ export default {
   width: 100%;
   height: 100%;
   position: fixed;
-  background: url("../../assets/interview.jpg");
+  background: url("../../assets/login_background.jpg");
   background-size: 100% ;
 }
 .loginDiv {
