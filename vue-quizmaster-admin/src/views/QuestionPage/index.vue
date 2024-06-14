@@ -1,8 +1,8 @@
 <template>
   <div class="question-page">
     <div class="import-button">
-      <el-button type="primary"
-      >导入<i class="el-icon-upload el-icon--right" @click="importDialogVisible=true"></i
+      <el-button type="primary" @click="importDialogVisible=true"
+      >导入<i class="el-icon-upload el-icon--right"></i
       ></el-button>
     </div>
 
