@@ -17,11 +17,11 @@
     </el-form>
 
 
-    <div class="add-button">
-      <el-button type="primary" @click="addDialogVisible=true"
-      >新增<i class="el-icon-plus el-icon--right"></i
-      ></el-button>
-    </div>
+<!--    <div class="add-button">-->
+<!--      <el-button type="primary" @click="addDialogVisible=true"-->
+<!--      >新增<i class="el-icon-plus el-icon&#45;&#45;right"></i-->
+<!--      ></el-button>-->
+<!--    </div>-->
 
     <el-table
         ref="multipleTable"
@@ -41,8 +41,8 @@
       </el-table-column>
       <el-table-column prop="username" label="用户名" >
       </el-table-column>
-      <el-table-column prop="password" label="密码">
-      </el-table-column>
+<!--      <el-table-column prop="password" label="密码">-->
+<!--      </el-table-column>-->
       <el-table-column prop="mobile" label="手机号">
       </el-table-column>
       <el-table-column prop="state" label="状态">
@@ -56,7 +56,7 @@
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope" >
-          <el-button size="small" @click="selectById(scope.row)">编辑</el-button>
+<!--          <el-button size="small" @click="selectById(scope.row)">编辑</el-button>-->
           <el-button size="small" type="primary" @click="()=>{
             updateForm.userId=scope.row.userId;
             updateForm.state=!scope.row.state;
@@ -66,13 +66,13 @@
       </el-table-column>
     </el-table>
 
-    <div style="margin-top: 20px; float: left">
-      <el-button type="danger" @click="deleteDialogVisible = true"
-      >删除
-      </el-button
-      >
-      <el-button @click="toggleSelection()">取消选择</el-button>
-    </div>
+<!--    <div style="margin-top: 20px; float: left">-->
+<!--      <el-button type="danger" @click="deleteDialogVisible = true"-->
+<!--      >删除-->
+<!--      </el-button-->
+<!--      >-->
+<!--      <el-button @click="toggleSelection()">取消选择</el-button>-->
+<!--    </div>-->
 
     <!-- 确认删除对话框 -->
     <el-dialog title="确认删除" :visible.sync="deleteDialogVisible" width="30%">
@@ -86,97 +86,97 @@
     </el-dialog>
 
     <!-- 编辑用户对话框 -->
-    <el-dialog title="编辑用户" :visible.sync="editDialogVisible" width="30%">
-      <el-form
-          :model="updateForm"
-          ref="updateForm">
-        <el-form-item label="用户id" prop="userId">
-          <el-input v-model="updateForm.userId" disabled></el-input>
-        </el-form-item>
+<!--    <el-dialog title="编辑用户" :visible.sync="editDialogVisible" width="30%">-->
+<!--      <el-form-->
+<!--          :model="updateForm"-->
+<!--          ref="updateForm">-->
+<!--        <el-form-item label="用户id" prop="userId">-->
+<!--          <el-input v-model="updateForm.userId" disabled></el-input>-->
+<!--        </el-form-item>-->
 
-        <el-form-item label="用户名" prop="username">
-          <el-input v-model="updateForm.username" type="text"></el-input>
-        </el-form-item>
+<!--        <el-form-item label="用户名" prop="username">-->
+<!--          <el-input v-model="updateForm.username" type="text"></el-input>-->
+<!--        </el-form-item>-->
 
-        <el-form-item label="头像">
-          <el-upload
-              class="avatar-uploader"
-              action="http://localhost:8080/admin/upload"
-              :headers="uploadHeader"
-              name="image"
-              :show-file-list="false"
-              :on-success="handleAvatarSuccessForUpdate"
-              :before-upload="beforeAvatarUpload">
-            <img v-if="updateForm.avatar" :src="updateForm.avatar" class="avatar" />
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
-        </el-form-item>
+<!--        <el-form-item label="头像">-->
+<!--          <el-upload-->
+<!--              class="avatar-uploader"-->
+<!--              action="http://localhost:8080/admin/upload"-->
+<!--              :headers="uploadHeader"-->
+<!--              name="image"-->
+<!--              :show-file-list="false"-->
+<!--              :on-success="handleAvatarSuccessForUpdate"-->
+<!--              :before-upload="beforeAvatarUpload">-->
+<!--            <img v-if="updateForm.avatar" :src="updateForm.avatar" class="avatar" />-->
+<!--            <i v-else class="el-icon-plus avatar-uploader-icon"></i>-->
+<!--          </el-upload>-->
+<!--        </el-form-item>-->
 
-        <el-form-item label="密码" prop="password">
-          <el-input v-model="updateForm.password" type="text"></el-input>
-        </el-form-item>
+<!--        <el-form-item label="密码" prop="password">-->
+<!--          <el-input v-model="updateForm.password" type="text"></el-input>-->
+<!--        </el-form-item>-->
 
-        <el-form-item label="手机号" prop="mobile">
-          <el-input v-model="updateForm.mobile" type="text"></el-input>
-        </el-form-item>
+<!--        <el-form-item label="手机号" prop="mobile">-->
+<!--          <el-input v-model="updateForm.mobile" type="text"></el-input>-->
+<!--        </el-form-item>-->
 
 
-        <el-form-item label="状态" prop="type">
-          <el-select placeholder="请选择状态" v-model="updateForm.state">
-            <el-option v-for="item in typeOptions" :key="item.typeId" :label="item.typeName"
-                       :value="item.typeId==1?true:false"></el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
+<!--        <el-form-item label="状态" prop="type">-->
+<!--          <el-select placeholder="请选择状态" v-model="updateForm.state">-->
+<!--            <el-option v-for="item in typeOptions" :key="item.typeId" :label="item.typeName"-->
+<!--                       :value="item.typeId==1?true:false"></el-option>-->
+<!--          </el-select>-->
+<!--        </el-form-item>-->
+<!--      </el-form>-->
 
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="editDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click=" () => {editDialogVisible = false;updateUser(); }"
-        >保存</el-button
-        >
-      </span>
-    </el-dialog>
+<!--      <span slot="footer" class="dialog-footer">-->
+<!--        <el-button @click="editDialogVisible = false">取 消</el-button>-->
+<!--        <el-button type="primary" @click=" () => {editDialogVisible = false;updateUser(); }"-->
+<!--        >保存</el-button-->
+<!--        >-->
+<!--      </span>-->
+<!--    </el-dialog>-->
 
     <!-- 新增用户对话框 -->
-    <el-dialog title="新增用户" :visible.sync="addDialogVisible" width="30%">
+<!--    <el-dialog title="新增用户" :visible.sync="addDialogVisible" width="30%">-->
 
-      <el-form
-          :model="addForm"
-          ref="addForm">
+<!--      <el-form-->
+<!--          :model="addForm"-->
+<!--          ref="addForm">-->
 
-        <el-form-item label="用户名" prop="username">
-          <el-input v-model="addForm.username" type="text"></el-input>
-        </el-form-item>
+<!--        <el-form-item label="用户名" prop="username">-->
+<!--          <el-input v-model="addForm.username" type="text"></el-input>-->
+<!--        </el-form-item>-->
 
-        <el-form-item label="密码" prop="password">
-          <el-input v-model="addForm.password" type="text"></el-input>
-        </el-form-item>
+<!--        <el-form-item label="密码" prop="password">-->
+<!--          <el-input v-model="addForm.password" type="text"></el-input>-->
+<!--        </el-form-item>-->
 
-        <el-form-item label="手机号" prop="mobile">
-          <el-input v-model="addForm.mobile" type="text"></el-input>
-        </el-form-item>
+<!--        <el-form-item label="手机号" prop="mobile">-->
+<!--          <el-input v-model="addForm.mobile" type="text"></el-input>-->
+<!--        </el-form-item>-->
 
-        <el-form-item label="头像">
-          <el-upload
-              class="avatar-uploader"
-              action="http://localhost:8080/admin/upload"
-              name="image"
-              :show-file-list="false"
-              :on-success="handleAvatarSuccessForAdd"
-              :before-upload="beforeAvatarUpload">
-            <img v-if="addForm.avatar" :src="addForm.avatar" class="avatar" />
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
-        </el-form-item>
-      </el-form>
+<!--        <el-form-item label="头像">-->
+<!--          <el-upload-->
+<!--              class="avatar-uploader"-->
+<!--              action="http://localhost:8080/admin/upload"-->
+<!--              name="image"-->
+<!--              :show-file-list="false"-->
+<!--              :on-success="handleAvatarSuccessForAdd"-->
+<!--              :before-upload="beforeAvatarUpload">-->
+<!--            <img v-if="addForm.avatar" :src="addForm.avatar" class="avatar" />-->
+<!--            <i v-else class="el-icon-plus avatar-uploader-icon"></i>-->
+<!--          </el-upload>-->
+<!--        </el-form-item>-->
+<!--      </el-form>-->
 
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="addDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click=" () => {addDialogVisible = false;addUser(); }"
-        >保存</el-button
-        >
-      </span>
-    </el-dialog>
+<!--      <span slot="footer" class="dialog-footer">-->
+<!--        <el-button @click="addDialogVisible = false">取 消</el-button>-->
+<!--        <el-button type="primary" @click=" () => {addDialogVisible = false;addUser(); }"-->
+<!--        >保存</el-button-->
+<!--        >-->
+<!--      </span>-->
+<!--    </el-dialog>-->
 
     <div class="pagination">
       <el-pagination
@@ -444,7 +444,7 @@ export default {
             console.log(err);
           });
     },
-    //新增题目
+    //新增用户
     addUser() {
       axios.post("/admin/users",this.addForm).then((res) => {
         if (res.data.code == 1) {
