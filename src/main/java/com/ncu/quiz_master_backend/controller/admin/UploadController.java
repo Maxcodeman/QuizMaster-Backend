@@ -14,7 +14,7 @@ import java.io.IOException;
 
 @Slf4j
 @RestController
-@RequestMapping("/admin/upload")
+@RequestMapping("/upload")
 public class UploadController {
     @Autowired
     AliOSSUtils aliOSSUtils;
