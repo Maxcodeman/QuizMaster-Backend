@@ -1,9 +1,11 @@
 package com.ncu.quiz_master_backend.controller.admin;
 
-import com.ncu.quiz_master_backend.entity.*;
+import com.ncu.quiz_master_backend.entity.FavoriteQuestion;
+import com.ncu.quiz_master_backend.entity.QuestionForUsers;
+import com.ncu.quiz_master_backend.entity.Result;
+import com.ncu.quiz_master_backend.entity.WrongQuestion;
 import com.ncu.quiz_master_backend.service.QuestionForUsersService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
