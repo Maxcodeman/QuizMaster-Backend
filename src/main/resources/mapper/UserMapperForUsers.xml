@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ncu.quiz_master_backend.mapper.UserMapperForUsers">
+    <update id="updateInfo">
+        UPDATE tb_user
+        <set>
+            <if test="username != null and mobile != ''">
+                username = #{username},
+            </if>
+            <if test="avatar != null and mobile != ''">
+                avatar = #{avatar},
+            </if>
+            <if test="mobile != null and mobile != ''">
+                mobile = #{mobile},
+            </if>
+        </set>
+        WHERE user_id = #{userId}
+
+        <!-- 为了避免因尾随逗号导致的SQL错误，这里可以通过choose标签去掉最后一个逗号 -->
+        <choose>
+            <when test="username != null or avatar != null or mobile != null">
+                <!-- 不需要实际执行的操作，仅用于去除可能的尾随逗号 -->
+                <set></set>
+            </when>
+        </choose>
+    </update>
+</mapper>
