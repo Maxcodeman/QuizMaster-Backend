@@ -67,8 +67,5 @@ public class QuestionForUsersController {
         return Result.success(null);
     }
 
-    @GetMapping("/comments/{questionId}")
-    public Result getComments(@PathVariable Integer questionId){
-        return Result.success();
-    }
+
 }
