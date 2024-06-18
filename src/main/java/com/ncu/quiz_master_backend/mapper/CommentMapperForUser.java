@@ -18,6 +18,7 @@ public interface CommentMapperForUser {
     void insertComment(Integer userId, Integer questionId, String commentContent);
 
     @Select("select tc.comment_id, tu.user_id, tu.username,tu.avatar, tc.comment_content, tc.create_time " +
-            "from tb_comment as tc join tb_user tu on tc.user_id = tu.user_id where tc.question_id = #{questionId}")
+            "from tb_comment as tc join tb_user tu on tc.user_id = tu.user_id where tc.question_id = #{questionId} " +
+            "order by tc.create_time desc")
     List<CommentInfo> selectByQuestionId(Integer questionId);
 }

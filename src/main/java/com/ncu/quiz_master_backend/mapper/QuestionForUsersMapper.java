@@ -40,41 +40,17 @@ public interface QuestionForUsersMapper {
             "values (#{userId},#{questionId},#{wrongCount})")
     void insertWrong(WrongQuestion wrongQuestion);
 
-    @Select("select tb_favorite.question_id,\n" +
-            "       tb_question.question_desc,\n" +
-            "       tb_question.option_a,\n" +
-            "       tb_question.option_b,\n" +
-            "       tb_question.option_c,\n" +
-            "       tb_question.option_d,\n" +
-            "       tb_question.answer,\n" +
-            "       tb_question.category_id,\n" +
-            "       COALESCE(tb_wrong.wrong_count, 0) AS wrong_count,\n" +
-            "       tb_favorite.is_favorite,\n" +
-            "       tb_question.type\n" +
-            "from tb_user\n" +
-            "    Join tb_favorite on tb_user.user_id = tb_favorite.user_id\n" +
-            "    join tb_question on tb_favorite.question_id = tb_question.question_id\n" +
-            "    join tb_wrong on tb_question.question_id = tb_wrong.question_id\n" +
-            "         AND tb_favorite.question_id = tb_wrong.question_id\n" +
-            "where tb_favorite.user_id = #{userId} and tb_favorite.is_favorite = 1;")
+    @Select("""
+                select f.user_id,f.question_id,q.question_desc,q.option_a,q.option_b,q.option_c,q.option_d,q.answer,q.category_id,
+                      coalesce(w.wrong_count,0)as wrong_count,f.is_favorite ,q.type from tb_favorite as f
+                left join  tb_wrong as w on  f.user_id=w.user_id and f.question_id=w.question_id
+                left join tb_question as q on f.question_id=q.question_id where f.user_id=1 and f.is_favorite=1""")
     List<QuestionForUsers> getFavourByUserId(Integer userId);
 
-    @Select("select tb_wrong.question_id,\n" +
-            "       tb_question.question_desc,\n" +
-            "       tb_question.option_a,\n" +
-            "       tb_question.option_b,\n" +
-            "       tb_question.option_c,\n" +
-            "       tb_question.option_d,\n" +
-            "       tb_question.answer,\n" +
-            "       tb_question.category_id,\n" +
-            "       COALESCE(tb_wrong.wrong_count, 0) AS wrong_count,\n" +
-            "       tb_favorite.is_favorite,\n" +
-            "       tb_question.type\n" +
-            "from tb_user\n" +
-            "         Join tb_favorite on tb_user.user_id = tb_favorite.user_id\n" +
-            "         join tb_question on tb_favorite.question_id = tb_question.question_id\n" +
-            "         join tb_wrong on tb_question.question_id = tb_wrong.question_id\n" +
-            "        AND tb_favorite.question_id = tb_wrong.question_id\n" +
-            "where tb_wrong.user_id = #{userId};")
+    @Select("""
+               select w.user_id,w.question_id,q.question_desc,q.option_a,q.option_b,q.option_c,q.option_d,q.answer,q.category_id,
+                      w.wrong_count,coalesce(f.is_favorite,0)as is_favorite ,q.type from tb_wrong as w
+                   left join  tb_favorite as f on w.user_id=f.user_id and w.question_id=f.question_id
+               left join tb_question as q on w.question_id=q.question_id where w.user_id=1""")
     List<QuestionForUsers> getWrongByUserId(Integer userId);
 }

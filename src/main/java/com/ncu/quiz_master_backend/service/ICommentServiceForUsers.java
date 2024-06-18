@@ -1,7 +1,6 @@
 package com.ncu.quiz_master_backend.service;
 
 import com.ncu.quiz_master_backend.entity.CommentInfo;
-import com.ncu.quiz_master_backend.entity.PageBean;
 
 import java.util.List;
 

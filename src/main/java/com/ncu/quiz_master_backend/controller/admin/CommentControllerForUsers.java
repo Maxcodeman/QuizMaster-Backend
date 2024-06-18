@@ -2,6 +2,7 @@ package com.ncu.quiz_master_backend.controller.admin;
 
 
 import com.ncu.quiz_master_backend.entity.CommentForUsers;
+import com.ncu.quiz_master_backend.entity.CommentInfo;
 import com.ncu.quiz_master_backend.entity.Result;
 import com.ncu.quiz_master_backend.service.ICommentServiceForUsers;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +29,9 @@ public class CommentControllerForUsers {
     @GetMapping("/{questionId}")
     public Result selectByQuestionId(@PathVariable Integer questionId){
         log.info("select comments by id = {}",questionId);
-        return Result.success(iCommentServiceForUsers.selectByQuestionId(questionId));
+        List<CommentInfo> commentForUsersList=iCommentServiceForUsers.selectByQuestionId(questionId);
+        log.info(commentForUsersList.toString());
+        return Result.success(commentForUsersList);
     }
 
 
