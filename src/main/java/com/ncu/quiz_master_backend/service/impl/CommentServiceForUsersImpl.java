@@ -25,9 +25,7 @@ public class CommentServiceForUsersImpl implements ICommentServiceForUsers {
 
     @Override
     public List<CommentInfo> selectByQuestionId(Integer questionId){
-
         List<CommentInfo> commentForUsersList = commentMapperForUser.selectByQuestionId(questionId);
-
         return commentForUsersList;
     }
 
