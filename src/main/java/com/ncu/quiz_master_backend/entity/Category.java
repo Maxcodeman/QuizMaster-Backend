@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 
 public class Category {
     private Integer categoryId;
-
     private String categoryName;
     //分类题目的数量，默认为0
     private Integer questionCount=0;

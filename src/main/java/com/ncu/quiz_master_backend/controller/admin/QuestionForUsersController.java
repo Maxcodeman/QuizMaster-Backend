@@ -67,5 +67,17 @@ public class QuestionForUsersController {
         return Result.success(null);
     }
 
+    @GetMapping("/questions/favorites")
+    public Result getFavourByUserId(@RequestParam Integer userId){
+        log.info("根据用户ID{}查询用户收藏：",userId);
+        List<QuestionForUsers> list = questionForUsersService.getFavourByUserId(userId);
+        return Result.success(list);
+    }
 
+    @GetMapping("/questions/wrongs")
+    public Result getWrongByUserId(@RequestParam Integer userId){
+        log.info("根据用户ID{}查询用户错题：",userId);
+        List<QuestionForUsers> list = questionForUsersService.getWrongByUserId(userId);
+        return Result.success(list);
+    }
 }

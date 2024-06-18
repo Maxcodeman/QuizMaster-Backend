@@ -40,5 +40,41 @@ public interface QuestionForUsersMapper {
             "values (#{userId},#{questionId},#{wrongCount})")
     void insertWrong(WrongQuestion wrongQuestion);
 
+    @Select("select tb_favorite.question_id,\n" +
+            "       tb_question.question_desc,\n" +
+            "       tb_question.option_a,\n" +
+            "       tb_question.option_b,\n" +
+            "       tb_question.option_c,\n" +
+            "       tb_question.option_d,\n" +
+            "       tb_question.answer,\n" +
+            "       tb_question.category_id,\n" +
+            "       COALESCE(tb_wrong.wrong_count, 0) AS wrong_count,\n" +
+            "       tb_favorite.is_favorite,\n" +
+            "       tb_question.type\n" +
+            "from tb_user\n" +
+            "    Join tb_favorite on tb_user.user_id = tb_favorite.user_id\n" +
+            "    join tb_question on tb_favorite.question_id = tb_question.question_id\n" +
+            "    join tb_wrong on tb_question.question_id = tb_wrong.question_id\n" +
+            "         AND tb_favorite.question_id = tb_wrong.question_id\n" +
+            "where tb_favorite.user_id = #{userId} and tb_favorite.is_favorite = 1;")
+    List<QuestionForUsers> getFavourByUserId(Integer userId);
 
+    @Select("select tb_wrong.question_id,\n" +
+            "       tb_question.question_desc,\n" +
+            "       tb_question.option_a,\n" +
+            "       tb_question.option_b,\n" +
+            "       tb_question.option_c,\n" +
+            "       tb_question.option_d,\n" +
+            "       tb_question.answer,\n" +
+            "       tb_question.category_id,\n" +
+            "       COALESCE(tb_wrong.wrong_count, 0) AS wrong_count,\n" +
+            "       tb_favorite.is_favorite,\n" +
+            "       tb_question.type\n" +
+            "from tb_user\n" +
+            "         Join tb_favorite on tb_user.user_id = tb_favorite.user_id\n" +
+            "         join tb_question on tb_favorite.question_id = tb_question.question_id\n" +
+            "         join tb_wrong on tb_question.question_id = tb_wrong.question_id\n" +
+            "        AND tb_favorite.question_id = tb_wrong.question_id\n" +
+            "where tb_wrong.user_id = #{userId};")
+    List<QuestionForUsers> getWrongByUserId(Integer userId);
 }
