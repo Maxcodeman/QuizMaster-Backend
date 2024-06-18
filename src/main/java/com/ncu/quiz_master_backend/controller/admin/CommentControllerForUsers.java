@@ -2,7 +2,6 @@ package com.ncu.quiz_master_backend.controller.admin;
 
 
 import com.ncu.quiz_master_backend.entity.CommentForUsers;
-import com.ncu.quiz_master_backend.entity.PageBean;
 import com.ncu.quiz_master_backend.entity.Result;
 import com.ncu.quiz_master_backend.service.ICommentServiceForUsers;
 import lombok.extern.slf4j.Slf4j;
@@ -25,12 +24,9 @@ public class CommentControllerForUsers {
     }
 
     @GetMapping("/{questionId}")
-    public Result selectByQuestionId(@PathVariable Integer questionId,
-                                     @RequestParam(defaultValue = "1") Integer page,
-                                     @RequestParam(defaultValue = "10")Integer pageSize){
+    public Result selectByQuestionId(@PathVariable Integer questionId){
         log.info("select comments by id = {}",questionId);
-        PageBean pageBean = iCommentServiceForUsers.selectByQuestionId(questionId, page, pageSize);
-        return Result.success(pageBean);
+        return Result.success(iCommentServiceForUsers.selectByQuestionId(questionId));
     }
 
 
