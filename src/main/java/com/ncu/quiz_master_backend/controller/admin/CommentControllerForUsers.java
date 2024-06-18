@@ -2,12 +2,15 @@ package com.ncu.quiz_master_backend.controller.admin;
 
 
 import com.ncu.quiz_master_backend.entity.CommentForUsers;
+import com.ncu.quiz_master_backend.entity.CommentInfo;
 import com.ncu.quiz_master_backend.entity.PageBean;
 import com.ncu.quiz_master_backend.entity.Result;
 import com.ncu.quiz_master_backend.service.ICommentServiceForUsers;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -29,8 +32,8 @@ public class CommentControllerForUsers {
                                      @RequestParam(defaultValue = "1") Integer page,
                                      @RequestParam(defaultValue = "10")Integer pageSize){
         log.info("select comments by id = {}",questionId);
-        PageBean pageBean = iCommentServiceForUsers.selectByQuestionId(questionId, page, pageSize);
-        return Result.success(pageBean);
+        List<CommentInfo> re = iCommentServiceForUsers.selectByQuestionId(questionId);
+        return Result.success(re);
     }
 
 

@@ -24,4 +24,8 @@ public interface QuestionForUsersService {
     void modifyFavoriteState(FavoriteQuestion favoriteQuestion);
     //添加收藏记录
     void addFavorite(FavoriteQuestion favoriteQuestion);
+    //根据收藏获取题目
+    List<QuestionForUsers> getFavourByUserId(Integer userId);
+
+    List<QuestionForUsers> getWrongByUserId(Integer userId);
 }

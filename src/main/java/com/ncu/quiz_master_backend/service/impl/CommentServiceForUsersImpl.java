@@ -3,6 +3,7 @@ package com.ncu.quiz_master_backend.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.ncu.quiz_master_backend.entity.CommentForUsers;
+import com.ncu.quiz_master_backend.entity.CommentInfo;
 import com.ncu.quiz_master_backend.entity.PageBean;
 import com.ncu.quiz_master_backend.mapper.CommentMapperForUser;
 import com.ncu.quiz_master_backend.service.ICommentServiceForUsers;
@@ -23,11 +24,11 @@ public class CommentServiceForUsersImpl implements ICommentServiceForUsers {
     }
 
     @Override
-    public PageBean selectByQuestionId(Integer questionId, Integer page, Integer pageSize){
-        PageHelper.startPage(page, pageSize);
-        List<CommentForUsers> commentForUsersList = commentMapperForUser.selectByQuestionId(questionId);
-        Page<CommentForUsers> p = (Page<CommentForUsers>) commentForUsersList;
-        return new PageBean(p.getTotal(), p.getResult());
+    public List<CommentInfo> selectByQuestionId(Integer questionId){
+
+        List<CommentInfo> commentForUsersList = commentMapperForUser.selectByQuestionId(questionId);
+
+        return commentForUsersList;
     }
 
 

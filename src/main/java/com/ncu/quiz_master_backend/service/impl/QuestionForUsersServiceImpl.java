@@ -49,8 +49,15 @@ public class QuestionForUsersServiceImpl implements QuestionForUsersService {
         questionForUsersMapper.insertWrong(wrongQuestion);
     }
 
+    @Override
+    public List<QuestionForUsers> getFavourByUserId(Integer userId){
+        return questionForUsersMapper.getFavourByUserId(userId);
+    }
 
-
+    @Override
+    public List<QuestionForUsers> getWrongByUserId(Integer userId){
+        return questionForUsersMapper.getWrongByUserId(userId);
+    };
 
 
 }
