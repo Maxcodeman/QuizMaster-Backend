@@ -26,4 +26,6 @@ public interface MessageMapper {
 
     @Update("update tb_message set message_content=#{messageContent}, view=#{view} where message_id = #{messageId}")
     void updateMessage(Integer messageId, String messageContent, Integer view);
+    @Select("select * from tb_message")
+    List<Message> selectAll();
 }

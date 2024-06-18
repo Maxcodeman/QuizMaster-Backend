@@ -50,4 +50,11 @@ public class MessageServiceImpl implements IMessageService {
     public void updateMessage(Integer messageId, String messageContent, Integer view){
         messageMapper.updateMessage(messageId, messageContent, view);
     }
+
+    @Override
+    public List<Message> getAllMessages() {
+        return messageMapper.selectAll();
+    }
+
+
 }
