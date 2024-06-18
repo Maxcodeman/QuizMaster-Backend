@@ -16,6 +16,5 @@ public interface IMessageService {
     void updateMessage(Integer messageId, String messageContent, Integer view);
 
 
-
-
+    List<Message> getAllMessages();
 }
