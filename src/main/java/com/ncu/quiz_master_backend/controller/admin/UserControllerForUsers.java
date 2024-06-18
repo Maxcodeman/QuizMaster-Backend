@@ -22,7 +22,7 @@ public class UserControllerForUsers {
     @Autowired
     private IUserServiceForUsers iUserServiceForUsers;
 
-    @PutMapping("/user/password")
+    @PutMapping("/users/password")
     public Result updatePassword(@RequestParam("userId") Integer userId,
                                  @RequestParam("oldPassword") String oldPassword,
                                  @RequestParam("newPassword") String newPassword){
@@ -39,13 +39,13 @@ public class UserControllerForUsers {
 
     }
 
-    @GetMapping("/user/info/{userId}")
+    @GetMapping("/users/info/{userId}")
     public Result selectById(@PathVariable Integer userId){
         UserInfo user = iUserServiceForUsers.selectById(userId);
         return Result.success(user);
     }
 
-    @PutMapping("/user/info")
+    @PutMapping("/users/info")
     public Result updateInfo(@RequestBody User user){
         log.info("user {} update information, name = {}, avatar = {}, mobile = {}",
                 user.getUserId(),

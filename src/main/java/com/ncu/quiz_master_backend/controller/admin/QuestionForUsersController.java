@@ -18,7 +18,7 @@ public class QuestionForUsersController {
 
     @Autowired
     private QuestionForUsersService questionForUsersService;
-    @GetMapping("/questions")
+    @GetMapping("/questions/categories")
     public Result getAllByCategoryId(@RequestParam Integer categoryId,@RequestParam Integer userId){
         log.info("获取分类ID为"+categoryId+"的题目列表");
         List<QuestionForUsers> questionForUsersList=questionForUsersService.getAllByCategoryId(categoryId,userId);

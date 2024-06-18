@@ -14,7 +14,7 @@ public class NoteServiceForUserImpl implements INoteServiceForUsers {
     private NoteMapperForUsers noteMapperForUsers;
 
     @Override
-    public Note selectById(Integer userId, Integer questionId){
+    public String selectById(Integer userId, Integer questionId){
         return noteMapperForUsers.selectById(userId, questionId);
     }
 
@@ -29,7 +29,7 @@ public class NoteServiceForUserImpl implements INoteServiceForUsers {
     }
 
     @Override
-    public List<Note> checkById(Integer userId, Integer questionId){
+    public Integer checkById(Integer userId, Integer questionId){
         return noteMapperForUsers.checkById(userId, questionId);
     }
 

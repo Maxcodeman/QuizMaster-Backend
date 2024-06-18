@@ -21,8 +21,8 @@ public class NoteControllerForUsers {
     public Result selectById(@RequestParam("userId") Integer userId,
                              @RequestParam("questionId") Integer questionId){
         log.info("select id = {}, question id = {}", userId, questionId);
-        Note noteList = iNoteServiceForUsers.selectById(userId, questionId);
-        return Result.success(noteList);
+        String noteContent = iNoteServiceForUsers.selectById(userId, questionId);
+        return Result.success(noteContent);
     }
 
     @PutMapping
@@ -43,9 +43,8 @@ public class NoteControllerForUsers {
     public Result checkById(@RequestParam("userId") Integer userId,
                             @RequestParam("questionId") Integer questionId){
         log.info("check id = {}, question id = {}", userId, questionId);
-        List<Note> note = iNoteServiceForUsers.checkById(userId, questionId);
-        if (note!=null) {return Result.success(1);}
-        else{ return Result.success(0);}
+        Integer check = iNoteServiceForUsers.checkById(userId, questionId);
+        return Result.success(check);
     }
 
 }
