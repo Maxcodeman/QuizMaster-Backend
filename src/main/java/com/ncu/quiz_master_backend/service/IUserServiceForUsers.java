@@ -10,7 +10,7 @@ public interface IUserServiceForUsers {
 
     void updateInfo(Integer userId, String username, String avatar, String mobile);
 
-    User queryById(Integer id);
+    User queryById(String mobile);
 
     String queryPasswordById(Integer userId);
 }

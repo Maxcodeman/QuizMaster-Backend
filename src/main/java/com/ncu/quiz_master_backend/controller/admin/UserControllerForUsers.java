@@ -59,18 +59,20 @@ public class UserControllerForUsers {
     @PostMapping("/users/login")
     public Result userLogin(@RequestBody User user, @RequestParam(required=false) Boolean remember){
         String password = user.getPassword();
-        Integer id = user.getUserId();
-        User a = iUserServiceForUsers.queryById(id);
+        String mobile = user.getMobile();
+        User a = iUserServiceForUsers.queryById(mobile);
         if(a==null){
             return Result.error("登陆失败，不存在该用户");
-        }else if(!a.getPassword().equals(password)){
+        } else if (!a.getMobile().equals(mobile)) {
+            return Result.error("手机号不正确！");
+        } else if(!a.getPassword().equals(password)){
             return Result.error("密码不正确！");
         }else{
-            log.info("用户登录：{}",id);
+            log.info("用户登录：{}",mobile);
             Map<String,Object> claims=new HashMap<>();
             claims.put("id",a.getUserId());
             claims.put("admin_name",a.getUsername());
-            String jwt = null;
+            String jwt;
             if(remember != null && remember){
                 jwt = JwtUtils.generateJwtWithExpire(claims);
             }else{

@@ -29,8 +29,8 @@ public class UserServiceForUsers implements IUserServiceForUsers {
     }
 
     @Override
-    public User queryById(Integer userId){
-        return userMapperForUsers.queryById(userId);
+    public User queryById(String mobile){
+        return userMapperForUsers.queryById(mobile);
     }
 
     @Override

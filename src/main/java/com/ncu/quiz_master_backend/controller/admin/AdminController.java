@@ -49,7 +49,7 @@ public class AdminController {
             claims.put("id",a.getAdminId());
             claims.put("admin_name",a.getAdminName());
             //jwt令牌
-            String jwt=null;
+            String jwt;
             //是否保持登录
             if(remember){
                 jwt= JwtUtils.generateJwtWithExpire(claims);

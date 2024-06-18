@@ -20,8 +20,8 @@ public interface UserMapperForUsers {
 
     void updateInfo(Integer userId, String username, String avatar, String mobile);
 
-    @Select("select * from tb_user where user_id = #{userId}")
-    User queryById(Integer userId);
+    @Select("select * from tb_user where mobile = #{mobile}")
+    User queryById(String mobile);
 
     @Select("select password from tb_user where user_id = #{userId}")
     String queryPasswordById(Integer userId);
