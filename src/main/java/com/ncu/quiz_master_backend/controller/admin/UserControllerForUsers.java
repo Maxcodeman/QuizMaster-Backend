@@ -81,4 +81,9 @@ public class UserControllerForUsers {
             return Result.success(jwt);
         }
     }
+    @PostMapping("/users/register")
+    public Result register(@RequestBody User user){
+        iUserServiceForUsers.register(user);
+        return Result.success();
+    }
 }

@@ -4,6 +4,7 @@ package com.ncu.quiz_master_backend.mapper;
 
 import com.ncu.quiz_master_backend.entity.User;
 import com.ncu.quiz_master_backend.entity.UserInfo;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -25,4 +26,7 @@ public interface UserMapperForUsers {
 
     @Select("select password from tb_user where user_id = #{userId}")
     String queryPasswordById(Integer userId);
+    @Insert("insert into tb_user(username, password, state, create_time, update_time, mobile) " +
+            "values (#{username},#{password},#{state},#{create_time},#{update_time},#{mobile})")
+    void insertUser(User user);
 }

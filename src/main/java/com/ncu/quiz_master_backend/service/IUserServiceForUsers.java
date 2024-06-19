@@ -13,4 +13,6 @@ public interface IUserServiceForUsers {
     User queryById(String mobile);
 
     String queryPasswordById(Integer userId);
+
+    void register(User user);
 }

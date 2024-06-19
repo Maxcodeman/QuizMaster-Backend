@@ -14,7 +14,7 @@ import java.io.IOException;
 
 @Slf4j
 @RestController
-@RequestMapping("/upload")
+@RequestMapping("/users/upload")
 public class UploadController {
     @Autowired
     AliOSSUtils aliOSSUtils;
@@ -22,8 +22,11 @@ public class UploadController {
     @Log
     @PostMapping
     public Result upload(MultipartFile image) throws IOException {
+        String url = aliOSSUtils.upload(image);
+        return Result.success(url);
+    }
 
-//        log.info("文件上传：{},{},{}",username,age,image);
+    //        log.info("文件上传：{},{},{}",username,age,image);
 //        //获取原始文件名
 //        String originalFilename = image.getOriginalFilename();
 //        //将文件存储在本地的磁盘目录
@@ -36,8 +39,4 @@ public class UploadController {
 //        //将文件存储在本地的磁盘目录
 //        image.transferTo(new File("D:/JetBrains/IdeaProjects/tlias-web-management/images/"+newFileName));
 //        //但是存储在本地有丢失的风险，因此使用阿里云的OSS对象存储服务，如下所示已封装到工具类aliOSSUtils中了
-
-        String url = aliOSSUtils.upload(image);
-        return Result.success(url);
-    }
 }

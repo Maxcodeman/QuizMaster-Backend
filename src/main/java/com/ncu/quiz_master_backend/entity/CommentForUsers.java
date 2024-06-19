@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class CommentForUsers {
     private Integer commentId;
-    private Integer questionId;
     private Integer userId;
+    private Integer questionId;
     private String username;
     private String avatar;
     private String commentContent;

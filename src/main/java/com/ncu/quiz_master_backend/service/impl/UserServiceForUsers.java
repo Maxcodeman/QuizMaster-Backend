@@ -8,6 +8,8 @@ import com.ncu.quiz_master_backend.service.IUserServiceForUsers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class UserServiceForUsers implements IUserServiceForUsers {
     @Autowired
@@ -34,5 +36,16 @@ public class UserServiceForUsers implements IUserServiceForUsers {
     }
 
     @Override
-    public String queryPasswordById(Integer userId){ return userMapperForUsers.queryPasswordById(userId); };
+    public String queryPasswordById(Integer userId){ return userMapperForUsers.queryPasswordById(userId); }
+
+    @Override
+    public void register(User user) {
+        user.setUpdateTime(LocalDateTime.now());
+        user.setCreateTime(LocalDateTime.now());
+        user.setState(true);
+        user.setAvatar("1.jpg");
+       userMapperForUsers.insertUser(user);
+    }
+
+    ;
 }
