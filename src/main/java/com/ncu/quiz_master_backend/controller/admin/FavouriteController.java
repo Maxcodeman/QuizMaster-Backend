@@ -4,12 +4,9 @@ import com.ncu.quiz_master_backend.anno.Log;
 import com.ncu.quiz_master_backend.entity.PageBean;
 import com.ncu.quiz_master_backend.entity.Result;
 import com.ncu.quiz_master_backend.service.FavouriteService;
-import com.ncu.quiz_master_backend.service.IQuestionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @RestController

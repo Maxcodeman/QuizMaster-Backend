@@ -12,19 +12,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping
-public class CategotyControllerForUsers {
+@RequestMapping("/users/categories")
+public class CategoryControllerForUsers {
 
     @Autowired
     private CategoryServiceForUsers categoryServiceForUsers;
 
-    @GetMapping("/users/categories")
+    @GetMapping()
     public Result getCategoryInfoByCategoryId(Integer categoryId){
         log.info("根据分类ID={}获取分类信息", categoryId);
         return Result.success(categoryServiceForUsers.getCategoryInfoByCategoryId(categoryId));
     }
 
-    @PostMapping("/users/categories")
+    @PostMapping()
     public Result getAllCategories(){
         log.info("获取全部分类信息");
         return Result.success(categoryServiceForUsers.getAllCategories());

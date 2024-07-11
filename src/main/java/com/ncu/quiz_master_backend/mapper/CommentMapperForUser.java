@@ -1,12 +1,9 @@
 package com.ncu.quiz_master_backend.mapper;
 
-import com.ncu.quiz_master_backend.entity.CommentForUsers;
 import com.ncu.quiz_master_backend.entity.CommentInfo;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 

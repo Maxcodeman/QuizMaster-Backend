@@ -2,9 +2,6 @@ package com.ncu.quiz_master_backend.service;
 
 import com.ncu.quiz_master_backend.entity.Category;
 import com.ncu.quiz_master_backend.entity.PageBean;
-import com.ncu.quiz_master_backend.entity.Question;
-
-import java.util.List;
 
 /**
  * <p>

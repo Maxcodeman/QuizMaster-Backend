@@ -3,7 +3,6 @@ package com.ncu.quiz_master_backend.controller.admin;
 
 import com.ncu.quiz_master_backend.anno.Log;
 import com.ncu.quiz_master_backend.entity.PageBean;
-import com.ncu.quiz_master_backend.entity.Question;
 import com.ncu.quiz_master_backend.entity.Result;
 import com.ncu.quiz_master_backend.entity.User;
 import com.ncu.quiz_master_backend.service.UserService;

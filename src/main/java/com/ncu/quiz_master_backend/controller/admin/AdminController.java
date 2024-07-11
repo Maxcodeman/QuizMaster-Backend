@@ -6,13 +6,10 @@ import com.ncu.quiz_master_backend.entity.PageBean;
 import com.ncu.quiz_master_backend.entity.Result;
 import com.ncu.quiz_master_backend.service.AdminService;
 import com.ncu.quiz_master_backend.utils.JwtUtils;
-import io.jsonwebtoken.Claims;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 

@@ -1,6 +1,5 @@
 package com.ncu.quiz_master_backend.service.impl;
 
-import com.ncu.quiz_master_backend.entity.Category;
 import com.ncu.quiz_master_backend.entity.PageBean;
 import com.ncu.quiz_master_backend.entity.Question;
 import com.ncu.quiz_master_backend.mapper.CategoryMapper;

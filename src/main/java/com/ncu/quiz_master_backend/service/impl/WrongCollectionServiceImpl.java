@@ -2,7 +2,6 @@ package com.ncu.quiz_master_backend.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.ncu.quiz_master_backend.entity.FavoriteQuestion;
 import com.ncu.quiz_master_backend.entity.PageBean;
 import com.ncu.quiz_master_backend.entity.WrongQuestion;
 import com.ncu.quiz_master_backend.mapper.WrongCollectionMapper;

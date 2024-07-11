@@ -1,7 +1,6 @@
 package com.ncu.quiz_master_backend.mapper;
 
 import com.ncu.quiz_master_backend.entity.FavoriteQuestion;
-import com.ncu.quiz_master_backend.entity.Question;
 import com.ncu.quiz_master_backend.entity.QuestionForUsers;
 import com.ncu.quiz_master_backend.entity.WrongQuestion;
 import org.apache.ibatis.annotations.Insert;

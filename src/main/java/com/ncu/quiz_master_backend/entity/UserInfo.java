@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * 用于安卓个人信息页显示
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

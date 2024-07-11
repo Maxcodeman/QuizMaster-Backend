@@ -1,13 +1,10 @@
 package com.ncu.quiz_master_backend.mapper;
 
 
-import com.ncu.quiz_master_backend.entity.Note;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
-
-import java.util.List;
 
 @Mapper
 public interface NoteMapperForUsers {

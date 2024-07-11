@@ -1,5 +1,8 @@
 package com.ncu.quiz_master_backend.constant;
 
+/**
+ * 题型常量
+ */
 public class TypeConstant {
     //单选题
     public static final int SINGLE_CHOICE=1;

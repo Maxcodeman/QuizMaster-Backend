@@ -17,12 +17,12 @@ import java.util.Objects;
 
 @Slf4j
 @RestController
-@RequestMapping
+@RequestMapping("/users")
 public class UserControllerForUsers {
     @Autowired
     private IUserServiceForUsers iUserServiceForUsers;
 
-    @PutMapping("/users/password")
+    @PutMapping("/password")
     public Result updatePassword(@RequestParam("userId") Integer userId,
                                  @RequestParam("oldPassword") String oldPassword,
                                  @RequestParam("newPassword") String newPassword){
@@ -39,13 +39,13 @@ public class UserControllerForUsers {
 
     }
 
-    @GetMapping("/users/info/{userId}")
+    @GetMapping("/info/{userId}")
     public Result selectById(@PathVariable Integer userId){
         UserInfo user = iUserServiceForUsers.selectById(userId);
         return Result.success(user);
     }
 
-    @PutMapping("/users/info")
+    @PutMapping("/info")
     public Result updateInfo(@RequestBody User user){
         log.info("user {} update information, name = {}, avatar = {}, mobile = {}",
                 user.getUserId(),
@@ -56,7 +56,7 @@ public class UserControllerForUsers {
         return Result.success();
     }
 
-    @PostMapping("/users/login")
+    @PostMapping("/login")
     public Result userLogin(@RequestBody User user, @RequestParam(required=false) Boolean remember){
         String password = user.getPassword();
         String mobile = user.getMobile();
@@ -81,7 +81,7 @@ public class UserControllerForUsers {
             return Result.success(jwt);
         }
     }
-    @PostMapping("/users/register")
+    @PostMapping("/register")
     public Result register(@RequestBody User user){
         iUserServiceForUsers.register(user);
         return Result.success();

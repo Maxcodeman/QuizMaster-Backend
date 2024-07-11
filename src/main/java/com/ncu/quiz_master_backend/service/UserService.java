@@ -2,7 +2,6 @@ package com.ncu.quiz_master_backend.service;
 
 import com.ncu.quiz_master_backend.entity.PageBean;
 import com.ncu.quiz_master_backend.entity.User;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 

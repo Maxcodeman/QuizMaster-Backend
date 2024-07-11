@@ -1,19 +1,13 @@
 package com.ncu.quiz_master_backend.controller.admin;
 
-
 import com.ncu.quiz_master_backend.anno.Log;
 import com.ncu.quiz_master_backend.entity.Category;
 import com.ncu.quiz_master_backend.entity.PageBean;
-import com.ncu.quiz_master_backend.entity.Question;
 import com.ncu.quiz_master_backend.entity.Result;
 import com.ncu.quiz_master_backend.service.ICategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.swing.plaf.PanelUI;
-import java.util.ArrayList;
-import java.util.List;
 
 @Slf4j
 @RestController

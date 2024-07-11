@@ -1,10 +1,6 @@
 package com.ncu.quiz_master_backend.service.impl;
 
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.ncu.quiz_master_backend.entity.CommentForUsers;
 import com.ncu.quiz_master_backend.entity.CommentInfo;
-import com.ncu.quiz_master_backend.entity.PageBean;
 import com.ncu.quiz_master_backend.mapper.CommentMapperForUser;
 import com.ncu.quiz_master_backend.service.ICommentServiceForUsers;
 import org.springframework.beans.factory.annotation.Autowired;
