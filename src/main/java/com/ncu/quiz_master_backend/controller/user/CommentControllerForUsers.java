@@ -1,4 +1,4 @@
-package com.ncu.quiz_master_backend.controller.admin;
+package com.ncu.quiz_master_backend.controller.user;
 
 
 import com.ncu.quiz_master_backend.entity.CommentForUsers;

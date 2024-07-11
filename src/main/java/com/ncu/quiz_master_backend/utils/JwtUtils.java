@@ -10,8 +10,10 @@ import java.util.Map;
 public class JwtUtils {
 
     private static String signKey = "max666";
+    //保持登录，两个星期
     private static Long longExpire = 14*86400000L;
-    private static Long shortExpire= 900000L;
+    //为保持登录，一天
+    private static Long shortExpire= 86400000L;
 
     /**
      * 生成JWT令牌
